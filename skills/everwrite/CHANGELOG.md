@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20260925-7 · 2026-09-25 · Output: the change note is one short sentence with an example
+- because: T-20260925-3 (outcome-1 wrong-outcome, 3 of 3 notes ran three to five sentences)
+- files: SKILL.md §Output
+- "One line" became "one sentence (under 25 words, no divider before it)" with a sample note. T-20260925-4 passed 3 of 3.
+
 ### C-20260925-6 · 2026-09-25 · Pre-publication review: linear-time parsing, fewer false positives, installed-copy rule
 - because: an independent read-only review before publishing (no blockers; seven should-fix and nit findings acted on); L-004; T-20260925-2
 - files: scripts/tells.py (heading regex without backtracking; comment and inline-code blanking by `str.find` loops; bounded link-target and reference patterns; lines split on newlines only, so U+2028 and form feed keep line numbers right; setext underlines no longer count as dividers; an unclosed fence is reported; conditional clauses such as "If the value is not set, it is zero" are exempt from the contrast rules; check marks are not emoji), scripts/test_tells.py (regression and speed cases), SKILL.md (Step 3 names `python3`; Output allows the Step 0 note; While working says to edit the source, not an installed copy), LEARNINGS.md (L-004; quoted examples wrapped for the checker)

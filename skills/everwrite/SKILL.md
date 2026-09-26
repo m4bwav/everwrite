@@ -86,7 +86,7 @@ Reread once and answer two questions. What still reads as generated (structure, 
 
 ## Output
 
-Only the final text, plus the one-line note from Step 0 when the skill is due. After editing existing text, add one line on what changed, plus the checker's counts for a file. In detect mode, the findings list only. No commentary about the humanizing unless the user asked to see the work.
+Only the final text, plus the one-line note from Step 0 when the skill is due. After editing existing text, add one sentence (under 25 words, no divider before it) on what changed, with the checker's counts for a file: "Cut the chat wrapper, hype and two unsourced claims; checker 27 strong to 0." In detect mode, the findings list only. No commentary about the humanizing unless the user asked to see the work.
 
 ## While working: capture learnings
 

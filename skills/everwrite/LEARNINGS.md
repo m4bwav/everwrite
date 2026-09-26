@@ -6,6 +6,22 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-006 · 2026-09-25 · Clear `tests.failing` before re-running the failed case
+- Trigger: the first rerun of outcome-1 after the fix still listed outcome-1 as failing in `evergreen.json`; one of three runs followed Step 0, reported it and ended with an offer, which failed the checker.
+- Hypothesis: Step 0 is part of the skill, so the unit's own state is part of every test prompt.
+- Rule: after a fix, clear the flag (`evergreen.py flag <unit> --clear-failing <id>`) before the confirming rerun, and record the run with `tested` afterwards.
+- Evidence: T-20260925-4, confirmed 2026-09-25
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-09-25
+
+### L-005 · 2026-09-25 · A headless `claude -p` runner tests this skill on native Windows, including shell cases
+- Trigger: `claude plugin eval` refuses shell-granting cases on native Windows (evergreen-protocol:L-019), and action-1 needs a shell to run the checker.
+- Hypothesis: plain `claude -p` has no sandbox requirement; an allowlist limits the shell to Python.
+- Rule: stage a fresh folder per run, pipe the prompt on stdin to `claude -p --output-format stream-json --verbose --max-turns N --settings '{"disableAllHooks":true}' --allowedTools Skill Read Glob Grep Edit Write "Bash(python:*)"`, read `tool_use` events for Skill and the `tells.py` calls, and run the checker on the result yourself. A baseline adds `"skillOverrides":{"everwrite":"off"}` to the same settings. About 0.3 USD per action or outcome run, 0.2 per trigger run.
+- Evidence: T-20260925-3, T-20260925-4
+- Scope: env:windows
+- Status: active · helpful 2 · harmful 0 · last_confirmed 2026-09-25
+
 ### L-004 · 2026-09-25 · Every regex in the checker gets a pathological-input test
 - Trigger: the pre-publication review timed the first heading regex at 45 seconds on a 3,000-character line, and the comment and link-target substitutions went quadratic on 100 KB of repeated openers.
 - Hypothesis: lazy groups followed by optional trailers (`(.*?)\s*#*\s*$`) and unbounded negated classes rescanned from every start position.

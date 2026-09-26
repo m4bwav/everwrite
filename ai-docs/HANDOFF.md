@@ -4,11 +4,11 @@ Updated 2026-09-25. Read this first, then [log.md](log.md); the skill's own hist
 
 ## Current state
 
-- Public repository m4bwav/everwrite since 2026-09-25, version 1.0.0. CI (tests.yml) passed on Linux, macOS and Windows with Python 3.9 and 3.13.
-- The skill replaces an older single-file skill named write-human that lived in a hosted skills store; that copy still exists there and should be removed so the two don't compete.
-- Evergreen: refreshed 2026-09-25 (m 0.4), next due in `skills/everwrite/evergreen.json`. Three volatile claims registered.
-- Checker self-test: 21 cases, including pathological-input speed cases. The skill eval suite (`evals/evals.json`, 7 cases) has not run.
+- Public repository m4bwav/everwrite since 2026-09-25, version 1.0.0. CI (tests.yml) passes on Linux, macOS and Windows with Python 3.9 and 3.13.
+- Skill suite: 7/7 (T-20260925-4) with a headless `claude -p` runner (LEARNINGS L-005). outcome-1 failed first (change note too long) and was fixed by C-20260925-7. trigger-2 (an email request) fired 2 of 3 runs, the weakest trigger.
+- The older write-human skill is switched off in Claude Code (`skillOverrides`); its hosted copy still exists in the account.
+- Evergreen: refreshed 2026-09-25, next due in `skills/everwrite/evergreen.json`.
 
 ## Next single action
 
-Run the skill suite with evergreen-test (triggers, decoys, action-1 on the fixture, outcome-1) and record it with `evergreen.py tested`.
+At the next refresh, rerun trigger-2 and consider a description phrase for everyday emails and messages if it drops below 2 of 3.
