@@ -1,0 +1,6 @@
+* text=auto eol=lf
+skills/everwrite/CHANGELOG.md merge=union
+skills/everwrite/RESEARCH.md merge=union
+skills/everwrite/LEARNINGS.md merge=union
+skills/everwrite/TESTS.md merge=union
+ai-docs/log.md merge=union

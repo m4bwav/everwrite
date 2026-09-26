@@ -1,0 +1,77 @@
+{
+  "evergreen": "1.0",
+  "name": "everwrite",
+  "kind": "skill",
+  "main": "SKILL.md",
+  "files": {
+    "research": "RESEARCH.md",
+    "changelog": "CHANGELOG.md",
+    "learnings": "LEARNINGS.md",
+    "tests": "TESTS.md"
+  },
+  "protocol": "plugin",
+  "source": null,
+  "topic": "the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse",
+  "tier": "moderate",
+  "interval_days": 20.0,
+  "last_checked": "2026-09-25",
+  "next_due": "2026-10-17",
+  "verify_at_use": false,
+  "volatile_claims": [
+    {
+      "claim": "Claude uses em dashes more than professional writers, while newer GPT models suppress them (Economist, July 2026, via Wikipedia)",
+      "checked": "2026-09-25",
+      "recheck_days": 60.0
+    },
+    {
+      "claim": "blader/humanizer (3.0.0) is the most-starred prose humanizer skill; none of the top three ships a deterministic checker",
+      "checked": "2026-09-25",
+      "recheck_days": 30.0
+    },
+    {
+      "claim": "Mid-2025-on stock words per Wikipedia: emphasizing, enhance, highlighting, showcasing, plus canned notability wording",
+      "checked": "2026-09-25",
+      "recheck_days": 60.0
+    }
+  ],
+  "contradiction": null,
+  "events": [],
+  "streak": {
+    "quiet": 0,
+    "pinned_min": 0,
+    "pinned_max": 0,
+    "vau_quiet": 0
+  },
+  "history": [
+    {
+      "date": "2026-08-21",
+      "m": null,
+      "interval_after": 30,
+      "note": "created"
+    },
+    {
+      "date": "2026-09-25",
+      "m": 0.4,
+      "interval_after": 20.0,
+      "note": "2026-09-25 refresh at conversion: Wikipedia rev 2026-09-24, blader/humanizer 3.0.0, no-ai-slop, stop-slop; checker added; cost: searches 3 (gh) · fetches 5"
+    }
+  ],
+  "counts": {
+    "learnings": 4,
+    "changes": 7,
+    "research": 6,
+    "tests": 2
+  },
+  "consolidate_every": 25,
+  "tests": {
+    "last_run": null,
+    "harness": null,
+    "env": null,
+    "cases": 0,
+    "passed": 0,
+    "failed": 0,
+    "failing": [],
+    "last_failure": null,
+    "research_after_days": null
+  }
+}

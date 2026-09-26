@@ -1,0 +1,22 @@
+{
+  "name": "everwrite",
+  "version": "1.0.0",
+  "description": "Makes prose read as written by a person: removes AI writing tells (dashes, stock words, not-X-but-Y contrasts, staged setups, inflated significance, chatbot residue), keeps sentences readable, and checks the result with a bundled stdlib script instead of a reread. Evergreen: it re-researches the signs of AI writing on a schedule and carries the evals that prove it works.",
+  "author": {
+    "name": "Mark Rogers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "humanizer",
+    "ai-tells",
+    "prose",
+    "style",
+    "lint",
+    "agent-skills",
+    "evergreen"
+  ],
+  "skills": "./skills",
+  "repository": "https://github.com/m4bwav/everwrite",
+  "homepage": "https://github.com/m4bwav/everwrite"
+}

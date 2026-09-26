@@ -1,0 +1,8 @@
+{
+  "name": "everwrite",
+  "owner": { "name": "Mark Rogers" },
+  "metadata": { "description": "Prose that reads as written by a person, with a checker that proves it" },
+  "plugins": [
+    { "name": "everwrite", "source": "./", "description": "Remove AI writing tells, keep sentences readable, and verify the result with a bundled stdlib checker" }
+  ]
+}
