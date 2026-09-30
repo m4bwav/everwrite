@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-007 · 2026-09-28 · Scripts that save tokens: let the checker find and fix invisible characters
+- Trigger: Mark asked to record every net token-saving process and script for the skills in use.
+- Hypothesis: invisible characters can't be seen when rereading a file, so an agent checking by eye spends tokens and still misses them; the script finds all of them in one pass.
+- Rule: never hunt for hidden characters by reading; run `tells.py <file>` and, on a `hidden-char` or `odd-space` hit, `tells.py --fix-hidden <file>`, which rewrites and re-checks in one call. The existing savers still apply: the checker's summary line instead of a reread for dashes and stock words (C-20260925-3, C-20260925-4), `--json` piped to a filter when only one category matters, and a batch run over a folder instead of one file at a time.
+- Evidence: C-20260928-1; test `test_fix_hidden_rewrites_file`
+- Scope: skill
+- Status: active · helpful 0 · harmful 0 · last_confirmed 2026-09-28
+
 ### L-006 · 2026-09-25 · Clear `tests.failing` before re-running the failed case
 - Trigger: the first rerun of outcome-1 after the fix still listed outcome-1 as failing in `evergreen.json`; one of three runs followed Step 0, reported it and ended with an offer, which failed the checker.
 - Hypothesis: Step 0 is part of the skill, so the unit's own state is part of every test prompt.

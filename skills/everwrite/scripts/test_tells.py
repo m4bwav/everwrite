@@ -122,11 +122,40 @@ class FalsePositives(unittest.TestCase):
         self.assertNotIn("emoji", categories("| Linux | \u2713 |\n\nDone \u2714"))
 
 
+class Hidden(unittest.TestCase):
+    TAGS = "".join(chr(0xE0000 + ord(c)) for c in "hi")
+
+    def test_covert_characters_are_strong(self):
+        for s in ("Hello\u200bworld.", "soft\u00adhyphen", "a\u2060b", "left\u202eright", "x" + self.TAGS + "y",
+                  "vs\U000E0100", "join\u200dme"):
+            self.assertIn(("hidden-char", "strong"), cats(s), repr(s))
+
+    def test_odd_spaces_are_weak(self):
+        self.assertIn(("odd-space", "weak"), cats("10\u00a0km and 5\u202fkg."))
+        self.assertNotIn("hidden-char", categories("10\u00a0km."))
+
+    def test_plain_text_and_emoji_selector_are_clean(self):
+        self.assertFalse({"hidden-char", "odd-space"} & categories("Plain words, plain spaces.\n\nDone."))
+        self.assertNotIn("hidden-char", categories("Nice \u2764\ufe0f"))
+
+    def test_seen_inside_code_and_named(self):
+        hits, _ = tells.check_text("Text.\n\n```\nx = 1\u200b\u200b\n```\n")
+        h = [h for h in hits if h["category"] == "hidden-char"]
+        self.assertEqual(len(h), 1)
+        self.assertEqual(h[0]["line"], 4)
+        self.assertIn("U+200B ZERO WIDTH SPACE x2", h[0]["match"])
+
+    def test_fix_hidden(self):
+        fixed, n = tells.fix_hidden("a\u200bb\u00a0c" + self.TAGS + "\r\nd\u202fe")
+        self.assertEqual(fixed, "ab c\r\nd e")
+        self.assertEqual(n, 5)
+
+
 class Speed(unittest.TestCase):
     def test_pathological_lines_stay_fast(self):
         import time
         for text in ("# a" + " " * 5000 + "b", "<!-- " * 20000, "](" * 30000, "`" * 20000, "a `b` " * 20000,
-                     ". " + " " * 50000 + "x", "- **" + "a" * 50000):
+                     ". " + " " * 50000 + "x", "- **" + "a" * 50000, "​" * 50000, "\U000E0041" * 50000):
             start = time.perf_counter()
             tells.check_text(text)
             self.assertLess(time.perf_counter() - start, 2.0, text[:20])
@@ -156,6 +185,18 @@ class Cli(unittest.TestCase):
         r = self.run_cli("--list")
         self.assertEqual(r.returncode, 0)
         self.assertIn("Stock words", r.stdout)
+
+    def test_fix_hidden_rewrites_file(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "note.md"
+            p.write_bytes("Harbor 2.4 builds in 41 seconds.​\r\n".encode("utf-8"))
+            self.assertEqual(self.run_cli(str(p)).returncode, 1)
+            r = self.run_cli(str(p), "--fix-hidden")
+            self.assertEqual(r.returncode, 0, r.stdout)
+            self.assertIn("fixed", r.stdout)
+            self.assertEqual(p.read_bytes(), b"Harbor 2.4 builds in 41 seconds.\r\n")
+            self.assertEqual(self.run_cli("-", "--fix-hidden", stdin="x").returncode, 2)
 
     def test_main_in_process(self):
         buf = io.StringIO()

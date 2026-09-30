@@ -72,11 +72,15 @@ These need company from other tells in the same passage before you act:
 - One listed word, one "however", one dash inside a quotation is not a tell. Clusters are.
 - Human habits are not tells: "very", "perhaps", "I think", "tends to", superlatives, a real aside, an odd specific detail, mixed feelings. Keep them.
 - Don't flatten deliberate style or rewrite strong human sentences.
+
+### Watermarks are a separate thing
+
+Claude (models from 2026-08-02; older ones by December 2026) and Gemini watermark their text statistically, in which words the model picks. Nothing is added to the text. Removing tells makes text better for readers but leaves that mark mostly in place, so never promise "undetectable" text and don't try to strip a provider's watermark. What is true and may be said: text with no real choices in it (dictated words, a fixed answer, a very short line) carries no statistical mark, and words the user wrote themselves carry none. Nobody outside the providers can check for the mark (detection is a private preview), so evidence stays the checker's named hits. Invisible characters are different: they are file hygiene, and Step 3 strips them.
 <!-- tells: on -->
 
 ## Step 3: mechanical check
 
-Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. Flags: `--max-words N` (default 30), `--allow-dashes`, `--json`, `--list`.
+Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--fix-hidden`, `--json`, `--list`.
 
 Checking the script's output costs far fewer tokens than rereading a long document for dashes and word lists; spend the reread on Step 4.
 

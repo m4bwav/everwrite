@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20260928-1 · 2026-09-28 · Watermarks section; checker scans for invisible characters and fixes them
+- because: user request (Mark asked how AI text fingerprints work and whether dictated text can carry one); R-20260928-1 to R-20260928-6
+- files: SKILL.md (Step 2 new subsection "Watermarks are a separate thing"; Step 3 names the new scan and `--fix-hidden`), scripts/tells.py (HIDDEN and ODD_SPACE tables, `describe_chars`, `fix_hidden`, `--fix-hidden`, `--list` text), scripts/test_tells.py (class Hidden, two speed inputs, a CLI round trip), RESEARCH.md (Current understanding, Open questions, Best sources, six findings), evergreen.json (three volatile claims, the 2026-12-02 event), evals/evals.json and evals/fixtures/hidden.md (action-3)
+- The skill now says plainly that removing tells does not remove a provider's statistical watermark, never promises "undetectable" text, and does not try to strip one. The checker flags invisible covert-mark characters (strong) and odd spaces (weak) on every line, code included, and `--fix-hidden` strips them in one pass. Self-test 27 of 27; no hits on 174 real Markdown files.
+
 ### C-20260925-7 · 2026-09-25 · Output: the change note is one short sentence with an example
 - because: T-20260925-3 (outcome-1 wrong-outcome, 3 of 3 notes ran three to five sentences)
 - files: SKILL.md §Output

@@ -6,6 +6,10 @@ Part of the everwrite skill. Standard library only, Python 3.9 or later.
     python tells.py FILE_OR_DIR [...]     check files (directories: every .md and .txt inside)
     python tells.py -                     read stdin
     python tells.py --list                print every rule and the stock-word list
+    python tells.py --fix-hidden FILE     strip invisible characters and odd spaces in place, then check
+
+Invisible characters are checked on every line, code included; they are file hygiene, not a
+watermark (Claude's and Gemini's text watermarks are statistical and add no characters).
 
 Skips YAML frontmatter, fenced code, inline code, HTML comments, URLs and link
 targets, and any region between lines holding only <!-- tells: off --> and <!-- tells: on -->.
@@ -17,6 +21,7 @@ import bisect
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 # Everything the checker knows lives in the tables below; a refresh edits them here
@@ -104,6 +109,13 @@ SMALL_WORDS = {
     "a", "an", "the", "and", "or", "but", "nor", "for", "so", "yet", "of", "in", "on", "at", "to", "by",
     "up", "as", "is", "if", "vs", "via", "per", "with", "from", "into", "onto", "over", "than",
 }
+# Invisible characters: covert-mark carriers (zero-width, word joiner, soft hyphen, bidi controls, tag and
+# variation-selector runs) are strong; odd spaces (no-break, narrow no-break, figure) are weak because some
+# typography wants them. Scanned over every line, code included. --fix-hidden deletes the first set and turns
+# the second into plain spaces. U+FE0F stays with EMOJI. Research: R-20260928-6.
+HIDDEN = re.compile("[\u00AD\u180E\u200B-\u200D\u2060-\u2064\u202A-\u202E\u2066-\u2069\uFEFF\uFE00-\uFE0E"
+                    "\U000E0000-\U000E007F\U000E0100-\U000E01EF]")
+ODD_SPACE = re.compile("[\u00A0\u2007\u202F]")
 EMOJI = re.compile("[\U0001F300-\U0001FAFF\U0001F000-\U0001F2FF\u2600-\u2712\u2715-\u27BF\u2B50\u2B55\uFE0F]")
 ARROWS = re.compile("[\u2190-\u21FF\u27F0-\u27FF]")
 CURLY = re.compile("[\u201C\u201D\u2018\u2019]")
@@ -260,6 +272,25 @@ def paragraphs(prepared):
         yield current
 
 
+def describe_chars(found):
+    """'U+200B ZERO WIDTH SPACE x3, U+00AD SOFT HYPHEN' for the distinct characters in found."""
+    counts = {}
+    for ch in found:
+        counts[ch] = counts.get(ch, 0) + 1
+    parts = []
+    for ch, k in counts.items():
+        name = unicodedata.name(ch, "") or ("TAG" if 0xE0000 <= ord(ch) <= 0xE007F else "UNNAMED")
+        parts.append("U+%04X %s%s" % (ord(ch), name, " x%d" % k if k > 1 else ""))
+    return ", ".join(parts)
+
+
+def fix_hidden(text):
+    """Delete covert-mark characters and turn odd spaces into plain ones; return (text, changes)."""
+    text, a = HIDDEN.subn("", text)
+    text, b = ODD_SPACE.subn(" ", text)
+    return text, a + b
+
+
 def check_text(text, max_words=30, allow_dashes=False):
     hits = []
     words = 0
@@ -269,6 +300,14 @@ def check_text(text, max_words=30, allow_dashes=False):
     def add(lineno, severity, category, match, hint):
         hits.append({"line": lineno, "severity": severity, "category": category,
                      "match": " ".join(match.split())[:70], "hint": hint})
+
+    for n, line in enumerate(text.replace("\r\n", "\n").replace("\r", "\n").split("\n"), 1):
+        for regex, severity, category, hint in (
+                (HIDDEN, "strong", "hidden-char", "invisible character: delete it (--fix-hidden)"),
+                (ODD_SPACE, "weak", "odd-space", "plain space unless the typography needs it (--fix-hidden)")):
+            found = regex.findall(line)
+            if found:
+                add(n, severity, category, describe_chars(found), hint)
 
     for lineno, message in notes:
         add(lineno, "weak", "input", "```", message)
@@ -387,6 +426,9 @@ def print_rules():
         print("  %-16s %-6s %s" % (category, severity, hint))
     print("  %-16s %-6s %s" % ("vocabulary", "both", "strong when two or more distinct words share a paragraph"))
     print("  also: emoji, bold-label, title-case, divider, curly-quote, decoration, long-sentence, repeated-opening")
+    print("  also, over every line including code: hidden-char (strong: zero-width, soft hyphen, bidi, tag and")
+    print("  variation-selector characters) and odd-space (weak: no-break, narrow no-break, figure space);")
+    print("  --fix-hidden deletes the first and turns the second into plain spaces")
     print("Stock words (regex): " + ", ".join(STOCK_WORDS))
 
 
@@ -400,6 +442,8 @@ def main(argv=None):
     ap.add_argument("--allow-dashes", action="store_true", help="the author's own sample uses dashes")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--list", action="store_true", help="print the rules and the stock-word list")
+    ap.add_argument("--fix-hidden", action="store_true",
+                    help="rewrite the files in place without invisible characters and odd spaces, then check them")
     args = ap.parse_args(argv)
     if args.list:
         print_rules()
@@ -412,6 +456,21 @@ def main(argv=None):
     except FileNotFoundError as exc:
         print("tells: no such file: %s" % exc, file=sys.stderr)
         return 2
+    if args.fix_hidden:
+        if "-" in files:
+            print("tells: --fix-hidden rewrites files; it cannot take stdin", file=sys.stderr)
+            return 2
+        for name in files:
+            data = Path(name).read_bytes()
+            try:
+                text = data.decode("utf-8")
+            except UnicodeDecodeError:
+                print("tells: %s is not UTF-8; left unchanged" % name, file=sys.stderr)
+                continue
+            fixed, changes = fix_hidden(text)
+            if changes:
+                Path(name).write_bytes(fixed.encode("utf-8"))
+                print("fixed %s: %d invisible character(s) or odd space(s)" % (name, changes))
     report, total_words = [], 0
     for name in files:
         hits, words = check_text(read(name), args.max_words, args.allow_dashes)

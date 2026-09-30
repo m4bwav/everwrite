@@ -32,10 +32,31 @@
       "claim": "Mid-2025-on stock words per Wikipedia: emphasizing, enhance, highlighting, showcasing, plus canned notability wording",
       "checked": "2026-09-25",
       "recheck_days": 60.0
+    },
+    {
+      "claim": "Claude text is watermarked (SynthID-Text style, no added characters) for models from 2026-08-02; older models by December 2026; detection is a private preview",
+      "checked": "2026-09-28",
+      "recheck_days": 30.0
+    },
+    {
+      "claim": "ChatGPT text carries no watermark; OpenAI says it aims to add text marking",
+      "checked": "2026-09-28",
+      "recheck_days": 30.0
+    },
+    {
+      "claim": "No public checker exists for deployed text watermarks (SynthID Detector is waitlist-only)",
+      "checked": "2026-09-28",
+      "recheck_days": 60.0
     }
   ],
   "contradiction": null,
-  "events": [],
+  "events": [
+    {
+      "date": "2026-12-02",
+      "settle_days": 7.0,
+      "label": "EU AI Act Art. 50(2) grace period ends; Anthropic's retrofit target for older models; OpenAI text marking likely"
+    }
+  ],
   "streak": {
     "quiet": 0,
     "pinned_min": 0,
@@ -57,9 +78,9 @@
     }
   ],
   "counts": {
-    "learnings": 6,
-    "changes": 8,
-    "research": 6,
+    "learnings": 7,
+    "changes": 9,
+    "research": 12,
     "tests": 4
   },
   "consolidate_every": 25,
@@ -67,7 +88,7 @@
     "last_run": "2026-09-25T22:15",
     "harness": "claude -p stream-json runner (fresh context per run, hooks off)",
     "env": "owner-pc",
-    "cases": 7,
+    "cases": 8,
     "passed": 7,
     "failed": 0,
     "failing": [],

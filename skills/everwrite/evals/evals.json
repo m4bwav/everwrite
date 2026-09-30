@@ -1,77 +1,123 @@
 {
-  "skill": "everwrite",
-  "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); extra fields are ignored by skill-creator's runner. Rules: protocol/TESTING.md.",
-  "evals": [
-    {
-      "id": "trigger-1",
-      "kind": "trigger",
-      "prompt": "Rewrite the intro of README.md so it doesn't read like ChatGPT wrote it.",
-      "files": ["evals/fixtures/sloppy.md"],
-      "expectations": ["the everwrite skill is invoked"],
-      "runs": 3
-    },
-    {
-      "id": "trigger-2",
-      "kind": "trigger",
-      "prompt": "write me a short email to my landlord saying the dishwasher's been broken since monday and asking when someone can come look",
-      "expectations": ["the everwrite skill is invoked (a person will read the text)"],
-      "runs": 3
-    },
-    {
-      "id": "trigger-3",
-      "kind": "trigger",
-      "prompt": "Is this paragraph AI slop? Just flag it, don't rewrite: 'In today's fast-paced world, our platform isn't just a tool, it's a movement.'",
-      "expectations": ["the everwrite skill is invoked", "the reply is a findings list in detect mode, with no rewrite and no guess about who wrote it"],
-      "runs": 3
-    },
-    {
-      "id": "decoy-1",
-      "kind": "trigger",
-      "decoy": true,
-      "prompt": "Add type hints to every function in utils.py and fix the flake8 warnings.",
-      "expectations": ["the everwrite skill is not invoked (code, not prose)"],
-      "runs": 3
-    },
-    {
-      "id": "decoy-2",
-      "kind": "trigger",
-      "decoy": true,
-      "prompt": "Change the timeout in config.yaml from 30 to 90 and bump the version in package.json.",
-      "expectations": ["the everwrite skill is not invoked (machine-read files)"],
-      "runs": 3
-    },
-    {
-      "id": "action-1",
-      "kind": "action",
-      "prompt": "Clean up evals/fixtures/sloppy.md in place so it reads like a person wrote it. Keep every fact.",
-      "files": ["evals/fixtures/sloppy.md"],
-      "expectations": [
-        "the checker ran on the file before and after the edit, proven by the trace, not by the reply saying so",
-        "the file changed on disk",
-        "the final checker run reports 0 strong"
-      ],
-      "evidence": {
-        "type": "trace",
-        "tool": "a shell tool (Bash, PowerShell, run_in_terminal)",
-        "input_match": "tells\\.py[^\\n]*sloppy\\.md",
-        "or": {"type": "file", "path": "evals/fixtures/sloppy.md", "check": "python scripts/tells.py evals/fixtures/sloppy.md exits 0"}
-      },
-      "baseline": "skill off (T-20260925-3): file rewritten with 0 strong hits, but the checker never ran; only the evidence half separates the arms",
-      "runs": 3
-    },
-    {
-      "id": "outcome-1",
-      "kind": "outcome",
-      "prompt": "Rewrite evals/fixtures/sloppy.md as plain release notes and print the result; don't write the file.",
-      "files": ["evals/fixtures/sloppy.md"],
-      "expectations": [
-        "the rewrite piped to `python scripts/tells.py -` exits 0 (no strong tells)",
-        "every fact survives, checked by regex: 'Harbor 2\\.4', '3 March 2026', '41 seconds', '95', 'Redis', 'Windows ARM64', 'harbor push --legacy'",
-        "no fact is added: no number, date, name or claim absent from the fixture (judge)",
-        "the reply contains the rewrite and at most one line about what changed (judge)"
-      ],
-      "baseline": "skill off (T-20260925-3, T-20260925-4): 3 to 4 strong hits, bold labels on every bullet",
-      "runs": 3
+ "skill": "everwrite",
+ "_format": "skill-creator evals.json plus evergreen fields (kind, decoy, evidence, baseline); extra fields are ignored by skill-creator's runner. Rules: protocol/TESTING.md.",
+ "evals": [
+  {
+   "id": "trigger-1",
+   "kind": "trigger",
+   "prompt": "Rewrite the intro of README.md so it doesn't read like ChatGPT wrote it.",
+   "files": [
+    "evals/fixtures/sloppy.md"
+   ],
+   "expectations": [
+    "the everwrite skill is invoked"
+   ],
+   "runs": 3
+  },
+  {
+   "id": "trigger-2",
+   "kind": "trigger",
+   "prompt": "write me a short email to my landlord saying the dishwasher's been broken since monday and asking when someone can come look",
+   "expectations": [
+    "the everwrite skill is invoked (a person will read the text)"
+   ],
+   "runs": 3
+  },
+  {
+   "id": "trigger-3",
+   "kind": "trigger",
+   "prompt": "Is this paragraph AI slop? Just flag it, don't rewrite: 'In today's fast-paced world, our platform isn't just a tool, it's a movement.'",
+   "expectations": [
+    "the everwrite skill is invoked",
+    "the reply is a findings list in detect mode, with no rewrite and no guess about who wrote it"
+   ],
+   "runs": 3
+  },
+  {
+   "id": "decoy-1",
+   "kind": "trigger",
+   "decoy": true,
+   "prompt": "Add type hints to every function in utils.py and fix the flake8 warnings.",
+   "expectations": [
+    "the everwrite skill is not invoked (code, not prose)"
+   ],
+   "runs": 3
+  },
+  {
+   "id": "decoy-2",
+   "kind": "trigger",
+   "decoy": true,
+   "prompt": "Change the timeout in config.yaml from 30 to 90 and bump the version in package.json.",
+   "expectations": [
+    "the everwrite skill is not invoked (machine-read files)"
+   ],
+   "runs": 3
+  },
+  {
+   "id": "action-1",
+   "kind": "action",
+   "prompt": "Clean up evals/fixtures/sloppy.md in place so it reads like a person wrote it. Keep every fact.",
+   "files": [
+    "evals/fixtures/sloppy.md"
+   ],
+   "expectations": [
+    "the checker ran on the file before and after the edit, proven by the trace, not by the reply saying so",
+    "the file changed on disk",
+    "the final checker run reports 0 strong"
+   ],
+   "evidence": {
+    "type": "trace",
+    "tool": "a shell tool (Bash, PowerShell, run_in_terminal)",
+    "input_match": "tells\\.py[^\\n]*sloppy\\.md",
+    "or": {
+     "type": "file",
+     "path": "evals/fixtures/sloppy.md",
+     "check": "python scripts/tells.py evals/fixtures/sloppy.md exits 0"
     }
-  ]
+   },
+   "baseline": "skill off (T-20260925-3): file rewritten with 0 strong hits, but the checker never ran; only the evidence half separates the arms",
+   "runs": 3
+  },
+  {
+   "id": "action-2",
+   "kind": "action",
+   "prompt": "Something in evals/fixtures/hidden.md breaks our diff tool. Clean the file up without changing any words.",
+   "files": [
+    "evals/fixtures/hidden.md"
+   ],
+   "expectations": [
+    "tells.py ran on the file, proven by the trace",
+    "the file on disk has no invisible characters left and every word is unchanged",
+    "the final checker run reports 0 strong"
+   ],
+   "evidence": {
+    "type": "trace",
+    "tool": "a shell tool (Bash, PowerShell, run_in_terminal)",
+    "input_match": "tells\\.py[^\\n]*hidden\\.md",
+    "or": {
+     "type": "file",
+     "path": "evals/fixtures/hidden.md",
+     "check": "python scripts/tells.py evals/fixtures/hidden.md exits 0 and reports no hidden-char or odd-space"
+    }
+   },
+   "baseline": "not run yet",
+   "runs": 3
+  },
+  {
+   "id": "outcome-1",
+   "kind": "outcome",
+   "prompt": "Rewrite evals/fixtures/sloppy.md as plain release notes and print the result; don't write the file.",
+   "files": [
+    "evals/fixtures/sloppy.md"
+   ],
+   "expectations": [
+    "the rewrite piped to `python scripts/tells.py -` exits 0 (no strong tells)",
+    "every fact survives, checked by regex: 'Harbor 2\\.4', '3 March 2026', '41 seconds', '95', 'Redis', 'Windows ARM64', 'harbor push --legacy'",
+    "no fact is added: no number, date, name or claim absent from the fixture (judge)",
+    "the reply contains the rewrite and at most one line about what changed (judge)"
+   ],
+   "baseline": "skill off (T-20260925-3, T-20260925-4): 3 to 4 strong hits, bold labels on every bullet",
+   "runs": 3
+  }
+ ]
 }
