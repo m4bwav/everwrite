@@ -5,6 +5,7 @@ import io
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -197,6 +198,26 @@ class Cli(unittest.TestCase):
             self.assertIn("fixed", r.stdout)
             self.assertEqual(p.read_bytes(), b"Harbor 2.4 builds in 41 seconds.\r\n")
             self.assertEqual(self.run_cli("-", "--fix-hidden", stdin="x").returncode, 2)
+
+    def test_repeated_heading_and_text(self):
+        # A GitHub wiki prints the file name as the page title; the page's own `# Getting started` repeated it
+        # on get-title-at-url's wiki (2026-09-30, the maintainer's correction).
+        page = "# Getting started\n\n## Install\n\nRun the installer.\n"
+        self.assertIn(("repeated-heading", "strong"), cats(page, page_title="Getting Started"))
+        self.assertNotIn("repeated-heading", categories(page))
+        self.assertNotIn("repeated-heading", categories("Intro first.\n\n# Getting started\n", page_title="Getting Started"))
+        self.assertNotIn("repeated-heading", categories("# get-title-at-url\n\nText.\n", page_title="Home"))
+        self.assertIn(("repeated-heading", "strong"), cats("## Install\n\n### Install\n\nRun it.\n"))
+        self.assertNotIn("repeated-heading", categories("## Install\n\nRun it.\n\n## Install\n\nAgain.\n"))
+        self.assertIn(("repeated-text", "strong"), cats("Harbor builds in 41 seconds.\n\nHarbor builds in 41 seconds.\n"))
+        self.assertNotIn("repeated-text", categories("Harbor builds fast.\n\nHarbor builds in 41 seconds.\n"))
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "Getting-Started.md"
+            p.write_text(page, encoding="utf-8")
+            self.assertEqual(self.run_cli(str(p)).returncode, 0)
+            result = self.run_cli(str(p), "--wiki")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("repeated-heading", result.stdout)
 
     def test_main_in_process(self):
         buf = io.StringIO()

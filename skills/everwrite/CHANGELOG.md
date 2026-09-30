@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20260930-1 · 2026-09-30 · The same thing twice in a row is a tell: repeated headings, the page title repeated, a paragraph repeated
+- because: user request (Mark saw get-title-at-url's wiki show "Getting Started" and then "Getting started"; "saying the same thing twice exactly is a mistake most humans wouldn't make", 2026-09-30); L-008
+- files: scripts/tells.py (`same_words()`, `check_text(page_title=)`, the `repeated-heading` and `repeated-text` tells, `--wiki`, `--list`), scripts/test_tells.py (28 tests), SKILL.md (Step 2 pattern list, Step 3 flags), references/patterns.md (Decorative headings), LEARNINGS.md (L-008)
+- A heading straight under a heading with the same words, a paragraph or list item repeated word for word, and, with `--wiki`, a first heading repeating the file-name title a GitHub wiki prints, are strong hits. On get-title-at-url's wiki the new flag found the doubled title on 8 of its 9 pages (Home opens with the package name, which is not a repeat).
+
 ### C-20260928-1 · 2026-09-28 · Watermarks section; checker scans for invisible characters and fixes them
 - because: user request (Mark asked how AI text fingerprints work and whether dictated text can carry one); R-20260928-1 to R-20260928-6
 - files: SKILL.md (Step 2 new subsection "Watermarks are a separate thing"; Step 3 names the new scan and `--fix-hidden`), scripts/tells.py (HIDDEN and ODD_SPACE tables, `describe_chars`, `fix_hidden`, `--fix-hidden`, `--list` text), scripts/test_tells.py (class Hidden, two speed inputs, a CLI round trip), RESEARCH.md (Current understanding, Open questions, Best sources, six findings), evergreen.json (three volatile claims, the 2026-12-02 event), evals/evals.json and evals/fixtures/hidden.md (action-3)

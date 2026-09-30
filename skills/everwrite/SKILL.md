@@ -52,6 +52,7 @@ These need company from other tells in the same passage before you act:
 - Synonym cycling: "the tool", "the platform", "the solution" for one thing. Pick a name and repeat it.
 - Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt.
 - Repeated sentence openings, uniform sentence length.
+- The same thing twice in a row: a heading that repeats the heading above it or the title the host already prints (a GitHub wiki prints the file name, so `# Getting started` under it shows the title twice), or a paragraph repeated word for word. People almost never do this.
 - False agency: "the data tells us", "the decision emerged". Name who acted.
 - Docs that describe the previous version ("replaces the old approach") outside a changelog.
 - Curly quotes where the target uses straight ones.
@@ -80,7 +81,7 @@ Claude (models from 2026-08-02; older ones by December 2026) and Gemini watermar
 
 ## Step 3: mechanical check
 
-Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--fix-hidden`, `--json`, `--list`.
+Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--wiki` (the file name is the page title the host prints, so a first heading repeating it is strong), `--fix-hidden`, `--json`, `--list`.
 
 Checking the script's output costs far fewer tokens than rereading a long document for dashes and word lists; spend the reread on Step 4.
 

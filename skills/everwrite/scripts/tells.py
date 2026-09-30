@@ -291,7 +291,15 @@ def fix_hidden(text):
     return text, a + b
 
 
-def check_text(text, max_words=30, allow_dashes=False):
+def same_words(a, b):
+    """Two texts that say the same thing word for word, ignoring case, markup and punctuation."""
+    key = lambda s: " ".join(re.findall(r"\w+", s.lower()))
+    return bool(key(a)) and key(a) == key(b)
+
+
+def check_text(text, max_words=30, allow_dashes=False, page_title=None):
+    """page_title: the title the host prints above the page (a GitHub wiki prints the file name), which the
+    first heading must not repeat."""
     hits = []
     words = 0
     notes = []
@@ -316,6 +324,27 @@ def check_text(text, max_words=30, allow_dashes=False):
     if len(rules) >= 2:
         for lineno, _, _, _ in rules:
             add(lineno, "weak", "divider", "---", "one rule between every section is decoration")
+
+    # The same thing said twice in a row: a heading straight under a heading with the same words (the title a
+    # host prints and the page's own `# Title`, or `## Install` then `### Install`), or a paragraph repeated.
+    previous = None
+    first_heading = True
+    for para in paragraphs(prepared):
+        lineno, prose, _, kind = para[0]
+        text_now = " ".join(p[1] for p in para)
+        if kind == "heading":
+            title_now = (HEADING.match(prose).group(2) or "").rstrip(" \t#")
+            if first_heading and page_title and same_words(title_now, page_title) and not previous:
+                add(lineno, "strong", "repeated-heading", title_now,
+                    "the host already prints the page title; start with the first paragraph")
+            elif previous and previous[0] == "heading" and same_words(title_now, previous[1]):
+                add(lineno, "strong", "repeated-heading", title_now, "the same heading twice in a row; cut one")
+            first_heading = False
+            previous = ("heading", title_now)
+        else:
+            if previous and previous[0] == kind and kind in ("text", "item") and same_words(text_now, previous[1]):
+                add(lineno, "strong", "repeated-text", text_now, "said twice in a row; cut one")
+            previous = (kind, text_now)
 
     for para in paragraphs(prepared):
         starts, pos = [], 0
@@ -426,6 +455,9 @@ def print_rules():
         print("  %-16s %-6s %s" % (category, severity, hint))
     print("  %-16s %-6s %s" % ("vocabulary", "both", "strong when two or more distinct words share a paragraph"))
     print("  also: emoji, bold-label, title-case, divider, curly-quote, decoration, long-sentence, repeated-opening")
+    print("  also (strong): repeated-heading (a heading straight under one with the same words, or with --wiki the")
+    print("  first heading repeating the page title the host prints from the file name) and repeated-text (the same")
+    print("  paragraph or list item twice in a row)")
     print("  also, over every line including code: hidden-char (strong: zero-width, soft hyphen, bidi, tag and")
     print("  variation-selector characters) and odd-space (weak: no-break, narrow no-break, figure space);")
     print("  --fix-hidden deletes the first and turns the second into plain spaces")
@@ -440,6 +472,9 @@ def main(argv=None):
     ap.add_argument("paths", nargs="*", help="files or directories (.md, .txt), or - for stdin")
     ap.add_argument("--max-words", type=int, default=30, help="flag sentences longer than this (default 30)")
     ap.add_argument("--allow-dashes", action="store_true", help="the author's own sample uses dashes")
+    ap.add_argument("--wiki", action="store_true",
+                    help="GitHub wiki pages: the host prints the file name as the page title, so a first heading "
+                         "that repeats it is flagged")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--list", action="store_true", help="print the rules and the stock-word list")
     ap.add_argument("--fix-hidden", action="store_true",
@@ -473,7 +508,10 @@ def main(argv=None):
                 print("fixed %s: %d invisible character(s) or odd space(s)" % (name, changes))
     report, total_words = [], 0
     for name in files:
-        hits, words = check_text(read(name), args.max_words, args.allow_dashes)
+        title = None
+        if args.wiki and name != "-" and not Path(name).name.startswith("_"):
+            title = Path(name).stem.replace("-", " ")
+        hits, words = check_text(read(name), args.max_words, args.allow_dashes, title)
         total_words += words
         for h in hits:
             h["file"] = "<stdin>" if name == "-" else name

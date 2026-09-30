@@ -6,6 +6,14 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-008 · 2026-09-30 · Saying the same thing twice in a row is a tell people don't make
+- Trigger: Mark, looking at get-title-at-url's wiki: GitHub printed "Getting Started" from the file name, and the page's own `# Getting started` followed it. "Saying the same thing twice exactly is a mistake most humans wouldn't make" (2026-09-30). The wikiwright skill had taught it: its page-sets rule allowed a `#` heading repeating the title.
+- Hypothesis: an agent writes each piece from its own template (a title, then a heading) and never sees the rendered page, so repeats the host or the previous block makes are invisible to it.
+- Rule: never repeat the heading above, the title the host prints, or the paragraph before; `tells.py` flags them strong, with `--wiki` for wiki pages. Know what the host prints before writing the first line.
+- Evidence: C-20260930-1; wikiwright C-20260930-4 (its `check` does the same for wikis)
+- Scope: skill
+- Status: promoted: C-20260930-1 · helpful 1 · harmful 0 · last_confirmed 2026-09-30
+
 ### L-007 · 2026-09-28 · Scripts that save tokens: let the checker find and fix invisible characters
 - Trigger: Mark asked to record every net token-saving process and script for the skills in use.
 - Hypothesis: invisible characters can't be seen when rereading a file, so an agent checking by eye spends tokens and still misses them; the script finds all of them in one pass.

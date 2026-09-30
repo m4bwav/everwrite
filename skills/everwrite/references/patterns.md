@@ -75,6 +75,8 @@ Bold labels on every bullet.
 
 Decorative headings: title case, emoji, arrows, a rule between every section, a top heading repeating the document title, a heading whose first sentence restates it. Use sentence case and let the title stand once.
 
+The same thing twice in a row. A GitHub wiki prints the page's file name as its title, so a page `Getting-Started.md` that opens with `# Getting started` shows the title twice, one line under the other (get-title-at-url's wiki, 2026-09-30). The same goes for `## Install` straight above `### Install`, and a paragraph pasted twice. People almost never repeat themselves this way. Start the page with its first paragraph and keep one of each heading. `tells.py` flags these as strong (`repeated-heading`, `repeated-text`; `--wiki` for the page title).
+
 ## Leftovers from the chat and the draft
 
 Chatbot residue wraps real content; remove the wrapper and keep the content.
