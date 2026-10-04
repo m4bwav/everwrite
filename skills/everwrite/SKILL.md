@@ -26,7 +26,7 @@ Read `evergreen.json` next to this file. If `verify_at_use` is true, re-check th
 ### Hard rules
 
 1. No em or en dashes (— –), and no ` -- ` used as one. Use a period, comma, colon or parentheses. Exception: the author's own sample uses dashes; then match its rate (`--allow-dashes`). Dashes inside code, paths and URLs stay.
-2. Never invent facts. No fact, name, number, date, quote or citation that isn't in the source or from the user. A vague true sentence beats a specific invented one. When a sentence needs a detail you don't have, ask or write the plain version.
+2. Never invent facts. No fact, name, number, date, quote or citation that isn't in the source or from the user. A vague true sentence beats a specific invented one. When a sentence needs a detail you don't have, ask or write the plain version. In first-person text written for someone (a blog post in their name), their reasons, feelings and verdicts are facts too: use only what they said or what their records show.
 3. No chatbot residue or meta-text: greetings, praise, "I hope this helps", "Let me know if", "Would you like", "Here's a breakdown", "Let's dive in", "In conclusion", "It's important to note", pleasantries ("Happy to help", "Feel free to reach out", "Don't hesitate to"), knowledge-cutoff lines, sentences that announce what the text will do.
 4. Formatting follows content. Sentence-case headings, no emoji, no bold label on every bullet, bold at most once per page, no rule between every section, no heading restated as the first sentence.
 5. In a file, change prose only. Code, inline code, commands, paths, frontmatter, data, link targets, quotations, titles and proper names stay exactly as they are.

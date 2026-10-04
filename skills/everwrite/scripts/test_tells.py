@@ -55,6 +55,8 @@ class Rules(unittest.TestCase):
     def test_setup_inflation_rider(self):
         self.assertIn(("setup", "strong"), cats("Here's the thing: it breaks."))
         self.assertIn(("setup", "strong"), cats("The best part: it learns."))
+        self.assertIn(("setup", "weak"), cats("The point is that the record lives on disk."))
+        self.assertNotIn(("setup", "weak"), cats("The point is to keep it small."))
         self.assertIn(("inflation", "strong"), cats("The launch marks a pivotal moment for the team."))
         self.assertIn(("rider", "strong"), cats("The cache moved to Redis, ensuring teams stay aligned."))
 
