@@ -56,7 +56,7 @@ Write an entry the moment a real signal happens: a user correction, the same err
 - Status: active · helpful 1 · harmful 0 · last_confirmed 2026-09-25
 
 ### L-002 · 2026-09-25 · Mojibake in piped PowerShell output is the console, not the checker
-- Trigger: `python tells.py FILE | Select-String ...` in Windows PowerShell showed em dashes as three odd characters.
+- Trigger: piping `python tells.py FILE` into `Select-String` in Windows PowerShell showed em dashes as three odd characters.
 - Hypothesis: PowerShell decodes a native command's piped stdout with the console code page; the script writes UTF-8 correctly (it reconfigures stdout).
 - Rule: read the checker's output directly or with `--json`; don't pipe it through PowerShell cmdlets when the matches matter.
 - Evidence: same run printed correctly unpiped, 2026-09-25
