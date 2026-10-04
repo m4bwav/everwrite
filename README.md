@@ -39,6 +39,10 @@ AI tells drift. Models get trained away from old habits and pick up new ones, so
 - [skills/everwrite/RESEARCH.md](skills/everwrite/RESEARCH.md): what the rules rest on and when they were last checked.
 - [ai-docs/INDEX.md](ai-docs/INDEX.md): notes left by past work sessions on this repository.
 
+## Privacy
+
+everwrite collects nothing. The skill is instructions for the agent, and its checker (`skills/everwrite/scripts/tells.py`) is a standard-library Python script that reads the files you point it at on your own machine. Neither one sends data anywhere, calls a server or keeps a copy of your text. Whatever your AI app does with the conversation is covered by that app's own privacy policy.
+
 ## Credits
 
 The patterns come from Wikipedia's [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) (WikiProject AI Cleanup) and from the ideas in [blader/humanizer](https://github.com/blader/humanizer), [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop), [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) and [gregorymm/humanize-text](https://github.com/gregorymm/humanize-text), all MIT licensed. The wording, the density rules and the checker are this project's own.
