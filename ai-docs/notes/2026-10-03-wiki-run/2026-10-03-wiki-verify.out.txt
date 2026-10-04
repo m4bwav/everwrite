@@ -1,0 +1,168 @@
+== installed ==
+clone: 0673975 2026-10-03
+Python 3.14.6
+== home-first-check ==
+$ python skills/everwrite/scripts/tells.py draft.md
+draft.md:3: strong inflation: 'marks a pivotal shift' (state the fact)
+draft.md:3: strong residue: 'excited to announce' (say it directly)
+draft.md:3: weak vocabulary: 'pivotal' (plain word or cut; never swap for another listed word)
+draft.md:4: strong contrast: "It's not just faster, it's" (state the second half directly)
+draft.md:4: strong residue: 'Let me know if' (delete the chat wrapper)
+tells: 4 strong, 1 weak, 28 words, 1 file(s)
+$ echo $?
+1
+== home-after-fix ==
+$ python skills/everwrite/scripts/tells.py draft.md
+tells: 0 strong, 0 weak, 19 words, 1 file(s)
+$ echo $?
+0
+== cmd-usage-no-args ==
+$ python skills/everwrite/scripts/tells.py
+usage: tells.py [-h] [--max-words MAX_WORDS] [--allow-dashes] [--wiki]
+                [--json] [--list] [--fix-hidden]
+                [paths ...]
+$ echo $?
+2
+== cmd-missing-file ==
+$ python skills/everwrite/scripts/tells.py nothere.md
+tells: no such file: nothere.md
+$ echo $?
+2
+== cmd-streams ==
+$ python skills/everwrite/scripts/tells.py nothere.md 2>/dev/null
+$ echo $?
+2
+== cmd-stdin ==
+$ echo "Great question! Here's a quick overview." | python skills/everwrite/scripts/tells.py -
+<stdin>:1: strong residue: 'Great question' (delete the praise)
+<stdin>:1: strong residue: "Here's a quick overview" (start with the content)
+tells: 2 strong, 0 weak, 6 words, 1 file(s)
+== cmd-json ==
+$ python skills/everwrite/scripts/tells.py --json draft.md
+{
+ "hits": [
+  {
+   "line": 3,
+   "severity": "strong",
+   "category": "inflation",
+   "match": "marks a pivotal shift",
+   "hint": "state the fact",
+   "file": "draft.md"
+  },
+  {
+   "line": 3,
+   "severity": "strong",
+   "category": "residue",
+   "match": "excited to announce",
+   "hint": "say it directly",
+   "file": "draft.md"
+  },
+  {
+   "line": 3,
+   "severity": "weak",
+   "category": "vocabulary",
+   "match": "pivotal",
+   "hint": "plain word or cut; never swap for another listed word",
+   "file": "draft.md"
+  },
+  {
+   "line": 4,
+   "severity": "strong",
+   "category": "contrast",
+   "match": "It's not just faster, it's",
+   "hint": "state the second half directly",
+   "file": "draft.md"
+  },
+  {
+   "line": 4,
+   "severity": "strong",
+   "category": "residue",
+   "match": "Let me know if",
+   "hint": "delete the chat wrapper",
+   "file": "draft.md"
+  }
+ ],
+ "summary": {
+  "strong": 4,
+  "weak": 1,
+  "words": 28,
+  "files": 1
+ }
+}
+== cmd-wiki ==
+$ python skills/everwrite/scripts/tells.py Getting-Started.md
+tells: 0 strong, 0 weak, 7 words, 1 file(s)
+$ python skills/everwrite/scripts/tells.py --wiki Getting-Started.md
+Getting-Started.md:1: strong repeated-heading: 'Getting started' (the host already prints the page title; start with the first paragraph)
+tells: 1 strong, 0 weak, 7 words, 1 file(s)
+== cmd-fix-hidden ==
+$ python skills/everwrite/scripts/tells.py note.md
+note.md:1: strong hidden-char: 'U+200B ZERO WIDTH SPACE' (invisible character: delete it (--fix-hidden))
+note.md:1: weak odd-space: 'U+00A0 NO-BREAK SPACE' (plain space unless the typography needs it (--fix-hidden))
+tells: 1 strong, 1 weak, 10 words, 1 file(s)
+$ python skills/everwrite/scripts/tells.py --fix-hidden note.md
+fixed note.md: 2 invisible character(s) or odd space(s)
+tells: 0 strong, 0 weak, 10 words, 1 file(s)
+== cmd-allow-dashes ==
+$ python skills/everwrite/scripts/tells.py note.md
+note.md:1: strong dash: '—' (use a period, comma, colon or parentheses)
+tells: 1 strong, 0 weak, 9 words, 1 file(s)
+$ python skills/everwrite/scripts/tells.py --allow-dashes note.md
+tells: 0 strong, 0 weak, 9 words, 1 file(s)
+== cmd-max-words ==
+$ python skills/everwrite/scripts/tells.py note.md
+note.md:1: weak long-sentence: '37 words: This sentence keeps going with one claus' (split it; one idea per sentence)
+tells: 0 strong, 1 weak, 37 words, 1 file(s)
+$ python skills/everwrite/scripts/tells.py --max-words 40 note.md
+tells: 0 strong, 0 weak, 37 words, 1 file(s)
+== cmd-tells-off ==
+$ python skills/everwrite/scripts/tells.py style.md
+tells: 0 strong, 0 weak, 11 words, 1 file(s)
+== cmd-directory ==
+$ python skills/everwrite/scripts/tells.py docs
+docs\draft.md:3: strong inflation: 'marks a pivotal shift' (state the fact)
+docs\draft.md:3: strong residue: 'excited to announce' (say it directly)
+docs\draft.md:3: weak vocabulary: 'pivotal' (plain word or cut; never swap for another listed word)
+docs\draft.md:4: strong contrast: "It's not just faster, it's" (state the second half directly)
+docs\draft.md:4: strong residue: 'Let me know if' (delete the chat wrapper)
+tells: 4 strong, 1 weak, 47 words, 2 file(s)
+== cmd-list ==
+$ python skills/everwrite/scripts/tells.py --list | head -3
+Rules (category, severity, hint):
+  dash             strong use a period, comma, colon or parentheses
+  dash             strong use a period, comma, colon or parentheses
+== recipe-json-filter ==
+$ python skills/everwrite/scripts/tells.py --json draft.md | python -c "import json,sys; print(json.load(sys.stdin)['summary'])"
+{'strong': 4, 'weak': 1, 'words': 28, 'files': 1}
+== recipe-hook ==
+$ git init -q . && git add draft.md
+$ sh hook.sh
+draft.md:3: strong inflation: 'marks a pivotal shift' (state the fact)
+draft.md:3: strong residue: 'excited to announce' (say it directly)
+draft.md:3: weak vocabulary: 'pivotal' (plain word or cut; never swap for another listed word)
+draft.md:4: strong contrast: "It's not just faster, it's" (state the second half directly)
+draft.md:4: strong residue: 'Let me know if' (delete the chat wrapper)
+tells: 4 strong, 1 weak, 28 words, 1 file(s)
+everwrite: fix the strong tells above, then commit again
+$ echo $?
+1
+== dev-self-test ==
+$ python skills/everwrite/scripts/test_tells.py
+............................
+----------------------------------------------------------------------
+Ran 28 tests in 0.967s
+
+OK
+== dev-prose-check ==
+$ python skills/everwrite/scripts/tells.py README.md AGENTS.md skills/everwrite/SKILL.md skills/everwrite/references
+AGENTS.md:14: weak long-sentence: '35 words: Before finishing a task that hit a dead' (split it; one idea per sentence)
+skills\everwrite\SKILL.md:14: weak long-sentence: '38 words: If is true, re-check the' (split it; one idea per sentence)
+skills\everwrite\SKILL.md:14: weak long-sentence: '36 words: If is set or today is on' (split it; one idea per sentence)
+skills\everwrite\SKILL.md:14: weak repeated-opening: 'if' (merge or vary the openings)
+skills\everwrite\SKILL.md:84: weak repeated-opening: 'it' (merge or vary the openings)
+skills\everwrite\SKILL.md:94: weak long-sentence: '38 words: After editing existing text, add one sen' (split it; one idea per sentence)
+skills\everwrite\SKILL.md:98: weak long-sentence: '37 words: If the user corrects you, the same error' (split it; one idea per sentence)
+skills\everwrite\SKILL.md:98: weak long-sentence: '39 words: If this folder is an installed copy (a p' (split it; one idea per sentence)
+tells: 0 strong, 8 weak, 1583 words, 4 file(s)
+$ echo $?
+0
