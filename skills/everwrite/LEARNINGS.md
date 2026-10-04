@@ -6,6 +6,24 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-010 · 2026-10-04 · Ghostwritten first person invents motives unless told not to
+- Trigger: drafting two blog posts in Mark's name for markdavidrogers.com, the first draft said a question of his "was answered yes" and gave the whole month's work one motive. Neither was in any record; both were caught at the Step 4 reread, while every version number had been checked against the registries.
+- Hypothesis: hard rule 2 reads as names, numbers and dates, so an agent checks those and still writes reasons, feelings and verdicts for the person, because a first-person blog asks for opinions.
+- Rule: in first-person text written for someone, their reasons, feelings and verdicts are facts: use only what they said or their records show (logs, handoffs, notes), else write the plain version.
+- Evidence: C-20261004-1; markdavidrogers-web PRs #32 and #33
+- Scope: skill
+- Status: promoted: C-20261004-1 · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+
+<!-- tells: off -->
+### L-009 · 2026-10-04 · "The point is that" slipped past the checker
+- Trigger: a blog draft had "The point is that the record lives on disk..."; `tells.py` passed it and only the reread caught the staging. The setup rules knew "the key point is" but not this form.
+- Hypothesis: people also write "the point is", mostly as a purpose ("the point is to keep it small"); the staged form adds "that".
+- Rule: "the (whole|main|real) point (here) is that" is a weak setup hit; the purpose form is not flagged. No hits on about 400 Markdown files across the Ai projects, so it adds no noise.
+- Evidence: C-20261004-1 (`test_setup_inflation_rider`)
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-04
+<!-- tells: on -->
+
 ### L-008 · 2026-09-30 · Saying the same thing twice in a row is a tell people don't make
 - Trigger: Mark, looking at get-title-at-url's wiki: GitHub printed "Getting Started" from the file name, and the page's own `# Getting started` followed it. "Saying the same thing twice exactly is a mistake most humans wouldn't make" (2026-09-30). The wikiwright skill had taught it: its page-sets rule allowed a `#` heading repeating the title.
 - Hypothesis: an agent writes each piece from its own template (a title, then a heading) and never sees the rendered page, so repeats the host or the previous block makes are invisible to it.

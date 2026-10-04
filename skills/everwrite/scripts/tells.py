@@ -84,6 +84,7 @@ RULES = [
     ("setup", "strong", r"\bwhat if I told you\b|\blet that sink in\b|\bread that again\b|\bfull stop\.|\bplot twist:", "cut the staging"),
     ("setup", "strong", r"\b(?:the|one) (?:best|key|real|crazy|wild|surprising) (?:part|thing|takeaway|detail)(?: is)?:", "write it as a plain sentence"),
     ("setup", "strong", r"\bthat last part matters\b|\bthis (?:distinction|part|point) matters\b|\bthe key point is\b|\bas you can see\b", "show why instead of saying it matters"),
+    ("setup", "weak", r"\bthe (?:whole |main |real )?point (?:here )?is that\b", "make the point"),
     ("setup", "strong", r"\ba tempting approach would be\b|\bone might be tempted to\b|\byou might think\b", "drop the option nobody raised"),
     ("setup", "strong", r"(?:^|[.!?]\s+)(?:honestly|look|real talk)[?,!]", "cut the staged candor"),
     ("setup", "strong", r"\bat its core\b|\bat the end of the day\b|\bin today'?s (?:fast[- ]paced |digital |modern )?world\b|\bin the age of\b", "delete"),

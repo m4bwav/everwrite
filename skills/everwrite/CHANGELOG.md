@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261004-1 · 2026-10-04 · Ghostwritten opinions count as facts; "the point is that" is a weak setup tell
+- because: L-009, L-010 (two blog posts for markdavidrogers.com, 2026-10-04)
+- files: SKILL.md (Hard rules, rule 2), scripts/tells.py (setup table), scripts/test_tells.py (`test_setup_inflation_rider`), LEARNINGS.md (L-009, L-010)
+- Rule 2 now says that in first-person text written for someone, their reasons, feelings and verdicts need a source like any other fact. The checker flags the staged "the point is that" as weak and leaves the purpose form alone. Self-test passes.
+
 ### C-20260930-1 · 2026-09-30 · The same thing twice in a row is a tell: repeated headings, the page title repeated, a paragraph repeated
 - because: user request (Mark saw get-title-at-url's wiki show "Getting Started" and then "Getting started"; "saying the same thing twice exactly is a mistake most humans wouldn't make", 2026-09-30); L-008
 - files: scripts/tells.py (`same_words()`, `check_text(page_title=)`, the `repeated-heading` and `repeated-text` tells, `--wiki`, `--list`), scripts/test_tells.py (28 tests), SKILL.md (Step 2 pattern list, Step 3 flags), references/patterns.md (Decorative headings), LEARNINGS.md (L-008)
