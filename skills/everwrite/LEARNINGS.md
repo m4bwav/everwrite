@@ -33,7 +33,7 @@ Write an entry the moment a real signal happens: a user correction, the same err
 ### L-005 · 2026-09-25 · A headless `claude -p` runner tests this skill on native Windows, including shell cases
 - Trigger: `claude plugin eval` refuses shell-granting cases on native Windows (evergreen-protocol:L-019), and action-1 needs a shell to run the checker.
 - Hypothesis: plain `claude -p` has no sandbox requirement; an allowlist limits the shell to Python.
-- Rule: stage a fresh folder per run, pipe the prompt on stdin to `claude -p --output-format stream-json --verbose --max-turns N --settings '{"disableAllHooks":true}' --allowedTools Skill Read Glob Grep Edit Write "Bash(python:*)"`, read `tool_use` events for Skill and the `tells.py` calls, and run the checker on the result yourself. A baseline adds `"skillOverrides":{"everwrite":"off"}` to the same settings. About 0.3 USD per action or outcome run, 0.2 per trigger run.
+- Rule: stage a fresh folder per run, then run headless Claude Code with the prompt as its standard input: `claude -p --output-format stream-json --verbose --max-turns N --settings '{"disableAllHooks":true}' --allowedTools Skill Read Glob Grep Edit Write "Bash(python:*)"`, read `tool_use` events for Skill and the `tells.py` calls, and run the checker on the result yourself. A baseline adds `"skillOverrides":{"everwrite":"off"}` to the same settings. About 0.3 USD per action or outcome run, 0.2 per trigger run.
 - Evidence: T-20260925-3, T-20260925-4
 - Scope: env:windows
 - Status: active · helpful 2 · harmful 0 · last_confirmed 2026-09-25
