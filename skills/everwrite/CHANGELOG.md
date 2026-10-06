@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261005-1 · 2026-10-05 · Root plugin.json for GitHub Copilot CLI and awesome-copilot; first release tag v1.0.0
+- because: user request (list the plugin in github/awesome-copilot, whose intake gates never read `.claude-plugin/` and pin a release tag)
+- files: ../../plugin.json (new)
+- The skill is unchanged and stays 1.0.0, which never had a tag; v1.0.0 is cut at this commit. Copilot CLI 1.0.92 installs it and `vally lint` passes.
+
 ### C-20261004-1 · 2026-10-04 · Ghostwritten opinions count as facts; "the point is that" is a weak setup tell
 - because: L-009, L-010 (two blog posts for markdavidrogers.com, 2026-10-04)
 - files: SKILL.md (Hard rules, rule 2), scripts/tells.py (setup table), scripts/test_tells.py (`test_setup_inflation_rider`), LEARNINGS.md (L-009, L-010)
