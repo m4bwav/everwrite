@@ -1,5 +1,7 @@
 # everwrite
 
+![A fountain pen writing warm handwritten letters on cream paper at a wooden desk by a sunny window, a small evergreen sprig in a vase](https://raw.githubusercontent.com/m4bwav/everwrite/master/.github/images/banner.jpg)
+
 A skill for AI agents that makes their prose read like a person wrote it. It strips the patterns that mark text as machine-written and keeps sentences short enough to read in one pass. A small script checks the result, so the model doesn't have to reread its own draft.
 
 It works in Claude Code, GitHub Copilot (VS Code and CLI), Codex, Cursor and any other agent that reads `SKILL.md` skills.
