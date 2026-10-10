@@ -49,6 +49,10 @@ everwrite collects nothing. The skill is instructions for the agent, and its che
 
 The patterns come from Wikipedia's [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) (WikiProject AI Cleanup) and from the ideas in [blader/humanizer](https://github.com/blader/humanizer), [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop), [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) and [gregorymm/humanize-text](https://github.com/gregorymm/humanize-text), all MIT licensed. The wording, the density rules and the checker are this project's own.
 
+## Listed in
+
+- Claude directory: [Everwrite](https://claude.ai/directory) (search "Everwrite"; listed for Claude Code, Cowork and the Claude apps)
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
