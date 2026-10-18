@@ -8,6 +8,12 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, then 
 
 ## Runs
 
+### T-20261017-1 · 2026-10-17 · unittest plus evergreen-tester runs (fresh context) and headless `claude -p` 2.1.281 for the trigger · owner-pc · 2/3 cases
+- After the refresh (C-20261017-1 to C-20261017-4): self-test 30 of 30; repo prose check 0 strong. action-1 1/1 on the refreshed copy (tells.py on the fixture before and after, 27 strong to 0, every fact kept). outcome-1 1/1 (reply piped to the checker: 0 strong, 0 weak; seven facts matched; fixture hash unchanged; one-sentence change note).
+- trigger-2 · trigger · no-trigger · 0 of 3 headless runs made any tool call; each wrote the landlord email directly, though the stream listed everwrite's description. The description did not change in this refresh, so this is the weakness HANDOFF already named (2 of 3 on 2026-09-25), now worse. Cost about 0.59 USD.
+- Other cases not rerun: the description is unchanged, and action-2 depends only on the hidden-character scan, which did not change.
+- led to: evergreen-tune owed for trigger-2
+
 ### T-20260925-4 · 2026-09-25 · headless `claude -p` runner (stream-json, fresh context per run, hooks off) · owner-pc · 7/7
 - After C-20260925-7, outcome-1 passed 3 of 3: the reply piped to `tells.py -` had 0 strong hits, all seven facts matched, the file was untouched, and each change note was one sentence. The other six cases carry over from T-20260925-3 (SKILL.md changed only in its Output section).
 - A first rerun before the failing flag was cleared passed 2 of 3: the third run obeyed Step 0, reported the failing test and ended with an offer ("Say if you want me to"), which the checker caught. See L-006.

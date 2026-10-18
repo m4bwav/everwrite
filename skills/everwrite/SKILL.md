@@ -36,9 +36,9 @@ Read `evergreen.json` next to this file. If `verify_at_use` is true, re-check th
 Act on one sighting of these:
 
 - Not X but Y in any form: "not just X but Y", "It's not X, it's Y", "X isn't Y, it's Z", the split version ("This doesn't mean X. It means Y."), a clipped tail (", no guessing"). State Y. Keep a contrast only when the reader really believes X.
-- Staged setups: "Here's the thing", "The truth is", "What most people get wrong", "The best part: it learns", "What if I told you", "This distinction matters". Make the point and let it stand.
+- Staged setups: "Here's the thing", "The truth is", "What most people get wrong", "The best part: it learns", "What if I told you", "This matters", "Why it matters", "Why? Because". Make the point and let it stand.
 - Arguing with no one: "To be clear", "I'm not saying", "A tempting approach would be" aimed at an option nobody raised.
-- Closers and kickers: a one-line paragraph restating the last one, stacked fragments ("No setup. No config. Just results."), an aphorism ("X is the language of Y"), "The future looks bright". End on the last concrete fact.
+- Closers and kickers: a one-line paragraph restating the last one, a last line echoing the first, "Looking ahead", stacked fragments ("No setup. No config. Just results."), an aphorism ("X is the language of Y"), "The future looks bright". End on the last concrete fact.
 - Inflated significance: "stands as a testament", "plays a pivotal role", "marks a shift", "reflects broader trends", "setting the stage for", a stock "Challenges and outlook" section. Keep the fact, drop the weight.
 - Shallow -ing riders tacked on for depth: ", highlighting...", ", ensuring...", ", showcasing...".
 - Borrowed authority: "experts argue", "studies show", a list of outlets, "active social media presence". Name the source or cut.
@@ -51,7 +51,8 @@ These need company from other tells in the same passage before you act:
 - Vague association: "associated with", "connected to" where the source names the relationship.
 - Synonym cycling: "the tool", "the platform", "the solution" for one thing. Pick a name and repeat it.
 - Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt.
-- Repeated sentence openings, uniform sentence length.
+- Repeated sentence openings, uniform sentence length (newer models keep nearly every sentence between 8 and 20 words; a cleanup that only removes words and dashes leaves this behind).
+- Writing for the wrong reader: re-explaining what the reader already knows, or opening a reply by restating the user ("You mentioned that").
 - The same thing twice in a row: a heading that repeats the heading above it or the title the host already prints (a GitHub wiki prints the file name, so `# Getting started` under it shows the title twice), or a paragraph repeated word for word. People almost never do this.
 - False agency: "the data tells us", "the decision emerged". Name who acted.
 - Docs that describe the previous version ("replaces the old approach") outside a changelog.
@@ -59,7 +60,7 @@ These need company from other tells in the same passage before you act:
 
 ### Readability
 
-- One idea per sentence. Most sentences under 20 words; one over 30 has to earn it. Vary the length.
+- One idea per sentence. Most sentences under 20 words; one over 30 has to earn it. Vary the length: mix short sentences with longer ones, because a page of sentences all 12 to 18 words long is a tell of its own.
 - Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph.
 - Plain words (use, help, show, big) and verbs that do the work ("decided", not "made a decision").
 - Define jargon and acronyms on first use.
@@ -76,7 +77,7 @@ These need company from other tells in the same passage before you act:
 
 ### Watermarks are a separate thing
 
-Claude (models from 2026-08-02; older ones by December 2026) and Gemini watermark their text statistically, in which words the model picks. Nothing is added to the text. Removing tells makes text better for readers but leaves that mark mostly in place, so never promise "undetectable" text and don't try to strip a provider's watermark. What is true and may be said: text with no real choices in it (dictated words, a fixed answer, a very short line) carries no statistical mark, and words the user wrote themselves carry none. Nobody outside the providers can check for the mark (detection is a private preview), so evidence stays the checker's named hits. Invisible characters are different: they are file hygiene, and Step 3 strips them.
+Claude (models from 2026-08-02; older ones by December 2026), Gemini and, since October 2026, ChatGPT and Codex for users in the EU (plus API users who opt in) watermark their text statistically, in which words the model picks. Nothing is added to the text. Removing tells makes text better for readers but leaves that mark mostly in place, so never promise "undetectable" text and don't try to strip a provider's watermark. What is true and may be said: text with no real choices in it (dictated words, a fixed answer, a very short line) carries no statistical mark, and words the user wrote themselves carry none. Nobody outside the providers can check text for the mark (text detection is limited to approved organisations; Google's public SynthID Detector checks images, video and audio, not text), so evidence stays the checker's named hits. Invisible characters are different: they are file hygiene, and Step 3 strips them.
 <!-- tells: on -->
 
 ## Step 3: mechanical check
@@ -84,6 +85,8 @@ Claude (models from 2026-08-02; older ones by December 2026) and Gemini watermar
 Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--wiki` (the file name is the page title the host prints, so a first heading repeating it is strong), `--fix-hidden`, `--json`, `--list`.
 
 Checking the script's output costs far fewer tokens than rereading a long document for dashes and word lists; spend the reread on Step 4.
+
+A team that already lints docs in CI can use a maintained rule set there instead: `tbhb/vale-ai-tells` for Vale (with a pre-commit hook) or `berelevant-ai/slopless` for textlint (`npx slopless "docs/**/*.md"`). Neither scans for invisible characters, so keep this script for that. Recommend them; install only when the user says yes.
 
 ## Step 4: audit what a script can't see
 
@@ -99,4 +102,4 @@ If the user corrects you, the same error happens twice, a workaround is found, o
 
 ## Maintenance
 
-This skill is evergreen (topic: the signs of AI-generated prose and how to write without them; tier `moderate`; interval and next due in `evergreen.json`). Files: `evergreen.json` (state), [RESEARCH.md](RESEARCH.md) (findings and search plan), [CHANGELOG.md](CHANGELOG.md) (every change, with reasons), [LEARNINGS.md](LEARNINGS.md) (lessons), [TESTS.md](TESTS.md) and `evals/evals.json` (the cases that prove it and the runs). Protocol: [MAINTENANCE.md](MAINTENANCE.md). Refresh with `evergreen-refresh`; test with `evergreen-test`; fix a failure with `evergreen-tune`; audit with `evergreen-audit`.
+This skill is evergreen (topic: the signs of AI-generated prose and how to write without them; tier in `evergreen.json`; interval and next due in `evergreen.json`). Files: `evergreen.json` (state), [RESEARCH.md](RESEARCH.md) (findings and search plan), [CHANGELOG.md](CHANGELOG.md) (every change, with reasons), [LEARNINGS.md](LEARNINGS.md) (lessons), [TESTS.md](TESTS.md) and `evals/evals.json` (the cases that prove it and the runs). Protocol: [MAINTENANCE.md](MAINTENANCE.md). Refresh with `evergreen-refresh`; test with `evergreen-test`; fix a failure with `evergreen-tune`; audit with `evergreen-audit`.

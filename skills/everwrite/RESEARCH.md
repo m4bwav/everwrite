@@ -2,32 +2,35 @@
 
 Findings that back [SKILL.md](SKILL.md). Changes they caused are logged in [CHANGELOG.md](CHANGELOG.md); procedural lessons live in [LEARNINGS.md](LEARNINGS.md); test runs and their evidence in [TESTS.md](TESTS.md); schedule and state in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Topic: the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse. Tier `moderate`. Last refresh 2026-09-25; next due in `evergreen.json`.
+Topic: the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse. Tier `fast` since 2026-10-17 (was `moderate`). Last refresh 2026-10-17; next due in `evergreen.json`.
 
 <!-- tells: off -->
 ## Current understanding
 
 - The shared answer key is Wikipedia's "Signs of AI writing" (WikiProject AI Cleanup, edited weekly). It is descriptive: a list of observations, strongest when several appear together. Every leading humanizer skill builds on it.
-- Structure outlasts vocabulary. Word habits change with each model release ("delve" peaked in 2023 and fell away in 2025; GPT-5-era text leans on emphasizing, enhance, highlighting, showcasing and on canned notability wording). Staging moves (not X but Y, one-line closers, staged setups, arguing with no one, triads) persist across models, so they lead the pattern list and the word list lives in the checker where a refresh can edit it in one place.
-- Dashes are fading as a general tell (newer GPT models suppress them; Wikipedia flagged the section for "historical" in September 2026), but a July 2026 study found Claude still uses em dashes more than professional writers. The zero-dash rule stays because this skill mostly runs on Claude; an author's own sample overrides it.
+- Structure outlasts vocabulary. Word habits change with each model release ("delve" peaked in 2023 and fell away in 2025; Wikipedia dates the GPT-5 words, emphasizing, enhance, highlighting, showcasing and canned notability wording, to mid-2025 to mid-2026, and since October 2026 lists a GPT-6 era: challenge, clearer, dependable, foster, leverage, matters, multifaceted, prioritize, quietly, steady, and sentences held to about 8 to 20 words). Staging moves (not X but Y, one-line closers, staged setups, arguing with no one, triads) persist across models, so they lead the pattern list and the word list lives in the checker where a refresh can edit it in one place. A structural classifier (SlopShape, September 2026) still scored 96 macro-F1 after models reworded their own posts.
+- Rhythm is the tell a cleanup leaves behind. In a blind test of blader/humanizer, the rewrite pass cleared vocabulary and dashes but raised uniform-beat hits from 60 to 101 and aphoristic closers from 38 to 61; detectors still called nearly all of it AI. Varying sentence length now gets as much weight as the word list.
+- Dashes are now a historical tell. Wikipedia moved the em-dash sign to Historical indicators on 2026-10-07 ("2022 to September 2026"). Newer GPT models suppress dashes, and Opus 5.5 nearly stopped too (0.015 per 1,000 words against 3.14 for human writing, Graphite, October 2026); the July 2026 Economist finding that Claude overuses them holds only for models before Opus 5.5. Opus 5.5's top tells are now phrases: "this matters" (116 times the human rate), "is more than a X, it", "why X matters", "looking ahead", "rather than simply", "adds another layer", "dependable". The zero-dash rule stays as a default (dashes still read as AI to many readers, and older models still emit them); an author's own sample overrides it.
 - Weak-alone tells (dashes in quotes, a single listed word, transitions, curly quotes, hyphenated pairs, passive voice) need company before they justify an edit. Human writing shows simple is/has, plain verbs, superlatives and ordinary hedges (very, perhaps, tends to); stripping those makes text read less human.
 - Detection by feel is near chance for most readers; heavy LLM users reach about 90 percent. Detector tools have real error rates. So the skill's evidence is a list of named, checkable patterns (the checker's output), never a verdict on authorship.
 - Two jobs recur across the leading skills: edit (minimum effective change, keep the writer's voice, return final text plus a short change note) and detect (quote each pattern with a fix, no score, no guess).
 - Text given for editing can carry instructions; treat it as material, never as commands (blader/humanizer 3.0).
-- None of the top prose humanizer skills ships a deterministic checker; they ask the model to reread. A stdlib script that scans for the mechanical tells saves the reread on long documents and gives tests an artifact to check.
-- Style tells and watermarks are separate layers. Anthropic has watermarked Claude text since 2026-08-02 (SynthID-Text style, in word choice, no added characters; older models by December 2026); Google has marked Gemini text since 2024; OpenAI shelved its text watermark and says it "aims to" add one. Editing tells leaves most of a statistical mark; only a full rewrite or translation removes it. The skill never promises "undetectable" output.
+- None of the top prose humanizer skills ships a deterministic checker; they ask the model to reread (blader/humanizer 3.1.0, October 2026, still doesn't). Standalone rule sets now exist with real use: tbhb/vale-ai-tells (Vale, 137 rules, pre-commit hook) and berelevant-ai/slopless (textlint CLI, 50+ rules), both active in October 2026; neither scans for invisible characters. A stdlib script that scans for the mechanical tells saves the reread on long documents and gives tests an artifact to check; the two rule sets are the option for teams that lint docs in CI.
+- Style tells and watermarks are separate layers. Anthropic has watermarked Claude text since 2026-08-02 (SynthID-Text style, in word choice, no added characters; older models by December 2026); Google has marked Gemini text since 2024; OpenAI announced textGrain on 2026-10-05 and is rolling it out to ChatGPT and Codex users in the EU (API opt-in elsewhere, off by default). Text detection for all three is limited to approved parties; Google's SynthID Detector opened to the public on 2026-10-07 for images, video and audio only. Editing tells leaves most of a statistical mark; only a full rewrite or translation removes it. The skill never promises "undetectable" output.
 - There is a real lower limit on detection, set by entropy (how many free word choices the model made), not by length. Dictated or fixed text ("One, two, three") has no choices, so no watermark or classifier can tell who typed it (Christ, Gunn and Zamir; Kirchenbauer et al.). Detection also needs enough marked text: Anthropic says small samples don't work, and SynthID-Text caught 39 percent of marked texts at 200 tokens in an independent test. Classifier detectors fail on short text and flag non-native writers (over 61 percent of human TOEFL essays, Liang et al. 2023).
 - Covert marks can also be invisible Unicode characters, which ignore entropy and are easy to strip. The o3/o4-mini U+202F reports (April 2025) were a training quirk by OpenAI's account, not a watermark; the checker scans for these characters anyway.
 - EU AI Act Art. 50 has applied since 2026-08-02 (providers mark synthetic text; the "standard editing" assist is exempt); existing systems have until 2026-12-02.
 
 ## Open questions
 
-- Does any humanizer skill strip invisible Unicode (not searched)? Does Anthropic's usage policy bar watermark removal (unverified)?
+- Does Anthropic's usage policy bar watermark removal? Neither Anthropic page mentions removal (checked 2026-10-17); the usage policy bars deceptive content in general.
 - Chakraborty et al.'s sample-complexity bound: exact form still to read.
-
-- Practice track: how people wire humanizer skills into agent workflows (always-on rule vs invoked skill, pre-commit or CI lint on docs) was not searched this round.
+- Practice: how people wire humanizer skills into agent workflows. 2026-10-17 found only two concrete patterns (slopless's `install-skill` command, vale-ai-tells' commit-msg hook); still thin.
 - Should forced triads get a heuristic in the checker? Every attempt so far is too noisy (lists of three are often real).
-- Is Vale (with a tells style) worth offering as an alternative checker for teams that already run it?
+- Do Sonnet 5.5 and Haiku drop dashes like Opus 5.5? Only Opus data so far.
+- Is Wikipedia's GPT-6 era word list stable? A temporary account added it in October 2026; only "dependable" went into the checker, because Graphite's count backs it.
+- Is the `uniform-rhythm` threshold (five or more sentences, spread under a quarter of the mean, all at least six words) right? No hits on 120 human READMEs; not yet tried on long human prose.
+- Resolved 2026-10-17: no top humanizer skill strips invisible Unicode (R-20261017-5); a Vale option exists and is pointed to (R-20261017-3).
 <!-- tells: on -->
 
 ## Search plan
@@ -36,14 +39,16 @@ Four tracks; every refresh runs at least one query on each (scope each to the pe
 
 Subject (the goal and the latest thinking on reaching it):
 
-- Fetch https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing and diff its section list and "Words to watch" lines against Current understanding; check the Historical indicators section for tells that retired
+- Fetch https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing and diff its section list and "Words to watch" lines against Current understanding; check the Historical indicators section for tells that retired. The page is over 250k characters and fetch tools summarise it badly, so read the history first (https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=history: dates, editors, edit summaries) and fetch only the changed sections
+- Official forums, announcements first, then open proposals: https://en.wikipedia.org/wiki/Wikipedia_talk:Signs_of_AI_writing, https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup, https://github.com/blader/humanizer/issues and its pull requests (proposed tells land there weeks before a release)
+- Per-model counts: https://graphite.io/five-percent/research (dated per-model tell reports with raw data), Arena posts via news coverage; for OpenAI use the cdn.openai.com PDFs, since openai.com returns 403
 - `"signs of AI writing" OR "AI writing tells" new patterns <year>`; `"em dash" Claude OR ChatGPT study <year>`
 - `"AI vocabulary" overused words study <year> site:arxiv.org`
 
 Tooling (skills, plugins, MCP servers, scripts, knowledge graphs built for this subject):
 
 - `gh search repos humanizer --sort stars` and `gh search repos slop --sort stars`; then read the SKILL.md of the top three prose skills (blader/humanizer, hardikpandya/stop-slop, petergyang/no-ai-slop as of 2026-09-25) for version bumps and new patterns
-- `gh search repos "ai writing" lint OR vale OR checker` for deterministic checkers that could replace or feed `scripts/tells.py`
+- `gh search repos "ai writing" lint OR vale OR checker`, plus `textlint "AI tells"` and `vale style "AI tells"`, for deterministic checkers that could replace or feed `scripts/tells.py`; recheck tbhb/vale-ai-tells and berelevant-ai/slopless (pointed to since 2026-10-17) for new rules worth copying
 - `path:SKILL.md "<topic>"` on GitHub code search, sorted by recently updated; `npx skills find "<topic>"` and skills.sh for install counts
 - `https://registry.modelcontextprotocol.io/v0/servers?search=<topic>`; fallback `"<topic>" mcp server site:glama.ai OR site:pulsemcp.com`
 - `"<topic>" skill OR plugin OR "mcp server" <year> site:github.com`
@@ -69,13 +74,76 @@ Testing (how work on this subject is verified, and how skills for it are tuned):
 - `path:SKILL.md "<topic>" test OR eval OR evals` on GitHub; `"<topic>" evals OR "eval suite" OR regression "agent skill" <year>`
 - `site:arxiv.org "<topic>" agent evaluation OR benchmark <year>`; promptfoo, Inspect or DeepEval docs for assertion types that fit this subject
 
-Best sources (primary first): Wikipedia "Signs of AI writing" and its cited studies; https://raw.githubusercontent.com/blader/humanizer/main/SKILL.md; https://raw.githubusercontent.com/hardikpandya/stop-slop/main/SKILL.md; https://raw.githubusercontent.com/petergyang/no-ai-slop/HEAD/skills/no-ai-slop/SKILL.md; tropes.fyi (pattern directory linked from Wikipedia, not yet read); for watermarks, https://www.anthropic.com/news/claude-text-watermark, https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content, https://ai.google.dev/responsible/docs/safeguards/synthid, Wikipedia "Text watermarking", and `site:arxiv.org watermark "AI Act"` (openai.com returns 403 and Nature needs a login: use ar5iv or secondary quotes). Sources that proved noisy: "AI detector" and "undetectable AI" tool sites (they sell evasion, not writing quality); SEO listicles.
+Best sources (primary first): Wikipedia "Signs of AI writing" and its cited studies; https://raw.githubusercontent.com/blader/humanizer/main/SKILL.md; https://raw.githubusercontent.com/hardikpandya/stop-slop/main/SKILL.md; https://raw.githubusercontent.com/petergyang/no-ai-slop/HEAD/skills/no-ai-slop/SKILL.md; tropes.fyi (pattern directory linked from Wikipedia, not yet read); for watermarks, https://www.anthropic.com/news/claude-text-watermark, https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content, https://ai.google.dev/responsible/docs/safeguards/synthid, Wikipedia "Text watermarking", and `site:arxiv.org watermark "AI Act"` (openai.com returns 403 and Nature needs a login: use ar5iv or secondary quotes). Sources that proved noisy: "AI detector" and "undetectable AI" tool sites (they sell evasion, not writing quality); SEO listicles; aiindigo, theairankings and watermark-remover sites. skills.sh's `api/search?q=` gives all-time installs only.
 
 ## Findings log
 
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
+### R-20261017-9 · 2026-10-17 · Tooling: claudisms.ai, a public-domain banlist of Claude-leaning phrases
+- Summary: claudisms.ai (CC0, /claudisms.md download, maintainer unnamed, from 2026-09-08) lists "this matters", "quietly", "doing the work", "compounds", "carry", "honestly", "most people", each with a reason and a replacement. A source to diff the word list against; too unvetted to copy wholesale.
+- Track: tooling
+- Sources: https://claudisms.ai/
+- Magnitude: 0.15
+- Applied: none (note)
+
+### R-20261017-8 · 2026-10-17 · Testing: SlopShape, structure alone detects AI web posts
+- Summary: arXiv 2609.15369 (v3, 2026-09-28) reports 97.0 macro-F1 from 176 structural features, 96.1 after each model reworded its own posts, and 68.6 percent attribution to the source model. Single author, vendor-affiliated, features applied by an LLM. Supports "structure outlasts vocabulary".
+- Track: testing
+- Sources: https://arxiv.org/abs/2609.15369
+- Magnitude: 0.15
+- Applied: none (backs Current understanding)
+
+### R-20261017-7 · 2026-10-17 · Subject: Wikipedia retires the em-dash sign and adds a GPT-6 era
+- Summary: On 2026-10-07 a temporary account moved "Overuse of em dashes" to Historical indicators (2022 to September 2026). "Words to watch" now ends the GPT-5 era at mid-2026 and adds "Mid-2026 and on (GPT-6)": challenge, clearer, dependable, echoed, foster, leverage, matters, multifaceted, practical, prioritize, quietly, steady, universally, with more periods and commas and sentences held to about 8 to 20 words. Also added since 10-06: canned user pages, placeholder text, unusual link formatting, comment-specific signs, hedging disclaimers. Open talk-page proposals: `<mark>` tags, "X rather than Y" source disclaimers, "X identified Y as Z" attribution.
+- Track: subject
+- Sources: https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing, https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=history, https://en.wikipedia.org/wiki/Wikipedia_talk:Signs_of_AI_writing
+- Magnitude: 0.5
+- Applied: C-20261017-2, C-20261017-3
+
+### R-20261017-6 · 2026-10-17 · Testing: a humanizer pass clears words but makes rhythm more uniform
+- Summary: blader/humanizer issue #229 (closed 2026-09-28; corpora and scripts in itsryanlenk/humanist) ran a blind test. The rewrite won 16 of 16 pairwise quality judgments, but the AI-detected share only moved from 100 to 98.6 percent (97.8 with a checker added) and Pangram 4.0 called every variant AI. Vocabulary hits went 70 to 0 and dash hits 60 to 0, while uniform-beat hits rose 60 to 101 and aphoristic closers 38 to 61. The add-on checker gave no measurable benefit. A check on sentence-length spread is the missing piece.
+- Track: testing
+- Sources: https://github.com/blader/humanizer/issues/229
+- Magnitude: 0.35
+- Applied: C-20261017-3
+
+### R-20261017-5 · 2026-10-17 · Tooling: blader/humanizer 3.1.0 adds "writing for the wrong reader"
+- Summary: blader/humanizer is at 3.1.0 (about 57.8k stars, pushed 2026-10-16). New section F covers re-explaining what the reader knows; pattern 25 now covers text describing itself; it states that beating detectors is not a goal (PR #294). Approved PR #308 adds four tells: a last line echoing the first, "In today's fast-paced world" and "As we all know", a question the next sentence answers ("Why? Because"), and a reply that restates the user ("You mentioned that"). No invisible-Unicode handling and no prose checker. hardikpandya/stop-slop (18.1k stars) has not been pushed since 2026-03-17; petergyang/no-ai-slop (12.5k) is unchanged since 2026-09-02. skills.sh all-time installs: op7418/humanizer-zh 53k, blader/humanizer 9.7k.
+- Track: tooling
+- Sources: https://raw.githubusercontent.com/blader/humanizer/main/SKILL.md, https://raw.githubusercontent.com/blader/humanizer/main/CHANGELOG.md, https://github.com/blader/humanizer/pull/308, https://skills.sh/api/search?q=humanizer
+- Magnitude: 0.3
+- Applied: C-20261017-2
+
+### R-20261017-4 · 2026-10-17 · Subject: Opus 5.5 nearly stopped using em dashes; "this matters" is its top tell
+- Summary: Graphite (marketing firm, not peer reviewed, raw data CC BY 4.0) compared 9,974 aligned topics. Opus 5.5 uses 0.015 em dashes per 1,000 words, against 2.92 for Opus 5 and 3.14 for human writing. Its top tells as multiples of the human rate: "this matters" 116x, "is more than a _ it" 98x, "why _ matters" 92x, "looking ahead the" 40x, "rather than simply" 32x, "adds another layer" 27x, "what comes next" 24x, "dependable" 23x. Arena found the same dash drop on 2026-09-26 (15.2 to 0.8 per 1,000 words). The Economist's July finding now holds only for older Claude models. The checker caught only "this (distinction|part|point) matters".
+- Track: subject
+- Sources: https://graphite.io/five-percent/research/ai-tells-opus-5-5-update, https://bleepingcomputer.com/news/artificial-intelligence/claude-opus-55-uses-95-percent-fewer-em-dashes-but-its-answers-are-getting-longer
+- Magnitude: 0.5
+- Applied: C-20261017-2
+
+### R-20261017-3 · 2026-10-17 · Tooling: maintained deterministic prose checkers now exist
+- Summary: tbhb/vale-ai-tells (MIT, 119 stars, v1.37.0, pushed 2026-10-17) is a Vale package of 137 rules with a commit-message style, a pre-commit hook and a false-positive test file. berelevant-ai/slopless (MIT, 335 stars, pushed 2026-10-17) is a textlint rule set with a CLI (`npx slopless "docs/**/*.md"`, exit 0/1/2, JSON) and `install-skill claude|codex`. Neither scans for invisible Unicode. The earlier claim that the only checker found had 3 stars is out of date; the claim that no top humanizer skill ships one still holds. Response: point, for teams already running Vale or textlint in CI.
+- Track: tooling
+- Sources: https://github.com/tbhb/vale-ai-tells, https://github.com/berelevant-ai/slopless
+- Magnitude: 0.4
+- Applied: C-20261017-4
+
+### R-20261017-2 · 2026-10-17 · Subject: SynthID Detector opens to the public, not for text
+- Summary: Google opened the SynthID Detector worldwide in English on 2026-10-07 for images, video and audio (sign-in, about 10 checks a day); it also reads OpenAI, NVIDIA and Kakao marks. The post says nothing about text. So text watermarks from Claude, Gemini and OpenAI still have no public checker.
+- Track: subject
+- Sources: https://blog.google/innovation-and-ai/models-and-research/google-deepmind/synth-id-ai-content/
+- Magnitude: 0.2
+- Applied: C-20261017-1
+
+### R-20261017-1 · 2026-10-17 · Subject: OpenAI watermarks ChatGPT and Codex text in the EU (textGrain)
+- Summary: OpenAI announced textGrain on 2026-10-05: a statistical watermark in word choice with no added characters (a keyed Gumbel coupling solved as optimal transport over vocabulary blocks, under an entropy budget). It rolls out over the following weeks to eligible ChatGPT and Codex users in the EU; API users anywhere can opt in for select models, off by default. Detection is limited to approved researchers. OpenAI's own numbers: swapping 10 percent of words for synonyms drops detection from about 92 to 66 percent, 25 percent drops it to 17. Short text, math and translations are harder. Replaces "ChatGPT text carries no watermark". Read from the technical report; openai.com returned 403.
+- Track: subject
+- Sources: https://cdn.openai.com/pdf/e9508624-d767-41b6-a26d-e34ca798ada6/textgrain-entropy-calibrated-watermarking-for-language-model-text.pdf, https://techcrunch.com/?p=3173997
+- Magnitude: 0.6
+- Applied: C-20261017-1
+
 ### R-20260928-6 · 2026-09-28 · Tooling: invisible-character marks; the checker had no Unicode scan
 - Summary: Reports in April 2025 found U+202F in long o3/o4-mini answers; OpenAI called it a reinforcement-learning quirk, not a watermark, and a retest two days later found none. Characters used as covert marks or smuggling carriers: U+200B to U+200D, U+2060, U+FEFF, U+00AD, U+00A0, U+202F, bidi controls (U+202A to U+202E, U+2066 to U+2069), tag characters (U+E0000 to U+E007F) and variation selectors. Only web tools scan for them; `tells.py` did not.
 - Track: tooling

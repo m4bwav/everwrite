@@ -37,7 +37,7 @@ STOCK_WORDS = [
     "multifaceted", "paramount", "pivotal", "profound", "realm", "renowned", "robust", "seamless",
     "showcas(?:e|es|ed|ing)", "streamlin(?:e|es|ed|ing)", "supercharg(?:e|es|ed|ing)", "tapestry",
     "testament", "transformative", "underscor(?:e|es|ed|ing)", "utiliz(?:e|es|ed|ing)", "vibrant",
-    "beacon", "commitment to",
+    "beacon", "commitment to", "dependable",
 ]
 
 # (category, severity, regex, hint[, flags]). Matched per paragraph, case-insensitive, over prose with
@@ -68,7 +68,7 @@ RULES = [
     ("placeholder", "strong", r"\[(?:insert|your|add|enter) [^\]]{1,40}\]|\(add your [^)]{1,40}\)|\b20\d\d-xx-xx\b", "fill it in or cut it"),
 
     ("contrast", "strong", r"\bnot (?:just|only|merely|simply)\b[^.!?]{0,120}?\bbut\b", "state the second half directly"),
-    ("contrast", "strong", r"\bmore than just\b", "state what it is"),
+    ("contrast", "strong", r"\bmore than just\b|\bis more than an? [\w-]+(?: [\w-]+)?[,;] it(?:'s| is)\b", "state what it is"),
     ("contrast", "strong", r"\b(?:it|this|that)(?:'s| is| was) not (?:about )?[^.!?,;\n]{1,60}[,;] (?:it|this|that)(?:'s| is| was)\b", "state the second half directly", "nocond"),
     ("contrast", "strong", r"\b(?:is|was|are)(?:n'?t| not)\s+[^.!?,;\n]{1,60}[,;]\s+(?:it|this|that|they)(?:'s|'re| is| was| are)\b", "state the second half directly", "nocond"),
     ("contrast", "strong", r"\b(?:does|do|did)(?:n'?t| not) mean\b[^.!?]{1,80}\.\s+(?:it|this|that|they) means?\b", "state the second half directly"),
@@ -85,6 +85,10 @@ RULES = [
     ("setup", "strong", r"\b(?:the|one) (?:best|key|real|crazy|wild|surprising) (?:part|thing|takeaway|detail)(?: is)?:", "write it as a plain sentence"),
     ("setup", "strong", r"\bthat last part matters\b|\bthis (?:distinction|part|point) matters\b|\bthe key point is\b|\bas you can see\b", "show why instead of saying it matters"),
     ("setup", "weak", r"\bthe (?:whole |main |real )?point (?:here )?is that\b", "make the point"),
+    ("setup", "weak", r"(?:^|[.!?:]\s+)(?:and |but )?(?:this|that) matters\b|\bwhy (?:this|it|that) matters\b", "show why instead of saying it matters"),
+    ("setup", "strong", r"\bas we all know\b", "cut the staging"),
+    ("setup", "weak", r"(?:^|[.!?]\s+)why\?\s+because\b|(?:^|[.!?]\s+)you mentioned (?:that )?", "answer directly"),
+    ("closer", "weak", r"(?:^|[.!?]\s+)looking ahead,|\bwhat comes next\b|\badds? (?:another|a new|an extra) layer\b", "end on the last concrete fact"),
     ("setup", "strong", r"\ba tempting approach would be\b|\bone might be tempted to\b|\byou might think\b", "drop the option nobody raised"),
     ("setup", "strong", r"(?:^|[.!?]\s+)(?:honestly|look|real talk)[?,!]", "cut the staged candor"),
     ("setup", "strong", r"\bat its core\b|\bat the end of the day\b|\bin today'?s (?:fast[- ]paced |digital |modern )?world\b|\bin the age of\b", "delete"),
@@ -402,7 +406,7 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None):
             spans.append((start, m.start()))
             start = m.end()
         spans.append((start, len(body)))
-        openings = []
+        openings, lengths = [], []
         for s, e in spans:
             sentence = body[s:e]
             count = len(WORD.findall(sentence))
@@ -416,6 +420,15 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None):
             openings.append((first[0].lower() if first else "", lineno))
             if len(openings) >= 3 and openings[-1][0] and openings[-1][0] == openings[-2][0] == openings[-3][0]:
                 add(lineno, "weak", "repeated-opening", openings[-1][0], "merge or vary the openings")
+            lengths.append((count, lineno))
+        # Uniform rhythm: five or more sentences of nearly the same length (spread under a quarter of the mean).
+        # A pass that clears words and dashes tends to leave this behind (R-20261017-6).
+        if len(lengths) >= 5:
+            sizes = [c for c, _ in lengths]
+            mean = sum(sizes) / len(sizes)
+            spread = (sum((c - mean) ** 2 for c in sizes) / len(sizes)) ** 0.5
+            if min(sizes) >= 6 and spread < 0.25 * mean:
+                add(lengths[0][1], "weak", "uniform-rhythm", "%d sentences of %d to %d words" % (len(sizes), min(sizes), max(sizes)), "vary the length: a short one, a longer one")
 
     seen, unique = set(), []
     for h in sorted(hits, key=lambda h: (h["line"], h["severity"] != "strong", h["category"])):

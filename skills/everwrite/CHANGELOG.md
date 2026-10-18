@@ -4,6 +4,31 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261017-5 · 2026-10-17 · Search plan names the official forums and per-model sources
+- because: R-20261017-7, R-20261017-4, R-20261017-3 (refresh practice: forum lines were missing)
+- files: RESEARCH.md (Search plan: Subject, Tooling, Best sources; Open questions)
+- Adds the Wikipedia talk page, WikiProject AI Cleanup and blader/humanizer issues as forums, the history-first way to read the 250k-character Wikipedia page, Graphite's per-model reports, the cdn.openai.com route, and the two pointed-to rule sets.
+
+### C-20261017-4 · 2026-10-17 · Point to vale-ai-tells and slopless for teams that lint docs in CI
+- because: R-20261017-3
+- files: SKILL.md (Step 3: mechanical check)
+- One paragraph names the two maintained rule sets as a CI option, says they don't scan for invisible characters, and says to install only on the user's yes.
+
+### C-20261017-3 · 2026-10-17 · Uniform sentence rhythm gets weight and a checker rule
+- because: R-20261017-6, R-20261017-7
+- files: SKILL.md (Step 2: Patterns, need-company list; Readability), scripts/tells.py (`uniform-rhythm` in `check_text`), scripts/test_tells.py (`test_uniform_rhythm`), references/patterns.md (Rhythm by rule)
+- The checker flags, as weak, a paragraph of five or more sentences of six words or more whose length spread is under a quarter of the mean. No hits on 120 human-written READMEs from node_modules. SKILL.md now says why to vary sentence length.
+
+### C-20261017-2 · 2026-10-17 · New phrase tells from Opus 5.5 counts and humanizer 3.1
+- because: R-20261017-4, R-20261017-5, R-20261017-7
+- files: SKILL.md (Step 2: Patterns, staged setups, closers, need-company list), scripts/tells.py (STOCK_WORDS `dependable`; contrast "is more than a X, it's"; setup "this matters" and "why it matters" weak, "as we all know" strong, "Why? Because" and "You mentioned that" weak; new `closer` category, weak: "Looking ahead,", "what comes next", "adds another layer"), scripts/test_tells.py (`test_newer_model_tells`), references/patterns.md (Staging, Closers, Leftovers)
+- Only "dependable" of Wikipedia's GPT-6 words went in, since Graphite's count backs it and the list came from a temporary account. Probe on 120 human READMEs: one weak hit ("Why it matters" as a heading). Self-test 30 of 30.
+
+### C-20261017-1 · 2026-10-17 · Watermarks: OpenAI marks EU ChatGPT and Codex text; the public detector does not cover text
+- because: R-20261017-1, R-20261017-2
+- files: SKILL.md (Step 2: Watermarks are a separate thing), RESEARCH.md (Current understanding), evergreen.json (volatile claims)
+- The watermark list now includes ChatGPT and Codex for EU users and opted-in API users since October 2026, and the "nobody can check" sentence says text detection is restricted while Google's public detector covers only images, video and audio.
+
 ### C-20261005-1 · 2026-10-05 · Root plugin.json for GitHub Copilot CLI and awesome-copilot; first release tag v1.0.0
 - because: user request (list the plugin in github/awesome-copilot, whose intake gates never read `.claude-plugin/` and pin a release tag)
 - files: ../../plugin.json (new)

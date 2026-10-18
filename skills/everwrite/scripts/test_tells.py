@@ -60,6 +60,27 @@ class Rules(unittest.TestCase):
         self.assertIn(("inflation", "strong"), cats("The launch marks a pivotal moment for the team."))
         self.assertIn(("rider", "strong"), cats("The cache moved to Redis, ensuring teams stay aligned."))
 
+    def test_newer_model_tells(self):
+        # R-20261017-4 (Graphite on Opus 5.5) and R-20261017-5 (humanizer PR #308).
+        self.assertIn(("setup", "weak"), cats("The cache now lives on disk. This matters for cold starts."))
+        self.assertIn(("setup", "weak"), cats("Here is why it matters."))
+        self.assertNotIn(("setup", "weak"), cats("Nothing in this matters to the parser."))
+        self.assertIn(("contrast", "strong"), cats("The tool is more than a linter, it's a habit."))
+        self.assertIn(("setup", "strong"), cats("As we all know, builds are slow."))
+        self.assertIn(("setup", "weak"), cats("Why? Because the cache was cold."))
+        self.assertIn(("setup", "weak"), cats("You mentioned that the build is slow."))
+        self.assertIn(("closer", "weak"), cats("Looking ahead, the team plans a second release."))
+        self.assertIn(("closer", "weak"), cats("The new index adds another layer of safety."))
+        self.assertIn(("vocabulary", "weak"), cats("The runner is dependable."))
+
+    def test_uniform_rhythm(self):
+        even = " ".join(["The parser reads each line and keeps the result %d." % i for i in range(6)])
+        self.assertIn(("uniform-rhythm", "weak"), cats(even))
+        varied = ("It broke. The parser reads each line and keeps the result in a cache on disk. "
+                  "Then it stops. Nobody noticed for a week because the nightly job retried silently and reported green. "
+                  "We fixed it. The fix was one line.")
+        self.assertNotIn("uniform-rhythm", categories(varied))
+
     def test_markdown_structure(self):
         self.assertIn(("bold-label", "strong"), cats("- **Speed:** builds are faster."))
         self.assertIn(("emoji", "strong"), cats("Shipped \U0001F680"))
