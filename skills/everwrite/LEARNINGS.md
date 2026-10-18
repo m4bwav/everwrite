@@ -6,6 +6,22 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-012 · 2026-10-17 · Test an edited description in the slot users have, not through --plugin-dir
+- Trigger: before the trigger-2 fix, the same unchanged description loaded with `--plugin-dir` (user copy switched off, skill listed as `everwrite:everwrite`) fired on trigger-1 only 1 of 3 runs, losing twice to editwright; as the installed user skill it fired 3 of 3 (T-20261017-2).
+- Hypothesis: the namespaced name and the plugin listing change how the model weighs the skill against neighbours, so the harness measures a different listing than users get.
+- Rule: measure before and after in the installed slot (the user skill the junction points at), swapping in the edited SKILL.md for the run and restoring it at once; use `--plugin-dir` only when nothing else is possible, and then run the before arm the same way.
+- Evidence: T-20261017-2
+- Scope: env:windows
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-17
+
+### L-011 · 2026-10-17 · Short everyday writing needs its own words in the description
+- Trigger: trigger-2 ("write me a short email to my landlord...") fired 2 of 3 on 2026-09-25 and 0 of 3 on 2026-10-17; every miss wrote the email with no tool call, though the description listed "emails" (T-20261017-1, T-20261017-2).
+- Hypothesis: a list of document kinds reads as files and deliverables; a three-line email feels like a chat reply, so the model answers directly instead of loading a skill.
+- Rule: the description says "however short", names letters and messages, and quotes the request form ('write me a quick email to...'). Measure held-out short requests (a text to a neighbour) and code or Q&A decoys after any description edit.
+- Evidence: C-20261017-6, T-20261017-2
+- Scope: skill
+- Status: active · helpful 1 · harmful 0 · last_confirmed 2026-10-17
+
 ### L-010 · 2026-10-04 · Ghostwritten first person invents motives unless told not to
 - Trigger: drafting two blog posts in Mark's name for markdavidrogers.com, the first draft said a question of his "was answered yes" and gave the whole month's work one motive. Neither was in any record; both were caught at the Step 4 reread, while every version number had been checked against the registries.
 - Hypothesis: hard rule 2 reads as names, numbers and dates, so an agent checks those and still writes reasons, feelings and verdicts for the person, because a first-person blog asks for opinions.

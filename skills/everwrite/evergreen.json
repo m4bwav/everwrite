@@ -84,22 +84,20 @@
     }
   ],
   "counts": {
-    "learnings": 10,
-    "changes": 16,
+    "learnings": 12,
+    "changes": 17,
     "research": 22,
-    "tests": 5
+    "tests": 6
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-10-17T00:00",
-    "harness": "evergreen-tester runs (fresh context) and headless claude -p 2.1.281 for triggers",
+    "last_run": "2026-10-17T19:28",
+    "harness": "headless claude -p 2.1.281, installed user skill, 3 runs per case",
     "env": "owner-pc",
-    "cases": 8,
-    "passed": 7,
-    "failed": 1,
-    "failing": [
-      "trigger-2"
-    ],
+    "cases": 5,
+    "passed": 5,
+    "failed": 0,
+    "failing": [],
     "last_failure": {
       "date": "2026-10-17",
       "note": "trigger-2 0/3: a short landlord email was written without loading the skill (description unchanged; was 2/3 on 2026-09-25)"
