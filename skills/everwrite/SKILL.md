@@ -1,6 +1,6 @@
 ---
 name: everwrite
-description: "Makes prose read as written by a person and checks it with a bundled script. Use whenever writing or editing text a person will read (docs, READMEs, reports, emails, posts, release notes, PR descriptions), and on 'humanize', 'sound human', 'remove AI tells', 'reads like AI', 'is this AI slop', 'refresh everwrite', 'is everwrite stale'. Not for code or config."
+description: "Makes prose read as written by a person and checks it with a bundled script. Use whenever writing or editing text a person will read, however short (docs, READMEs, reports, emails, letters, messages, posts, release notes, PR descriptions; 'write me a quick email to...'), and on 'humanize', 'sound human', 'remove AI tells', 'reads like AI', 'is this AI slop', 'refresh everwrite', 'is everwrite stale'. Not for code or config."
 ---
 
 # Everwrite

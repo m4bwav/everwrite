@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261017-6 · 2026-10-17 · Description covers short emails and messages
+- because: T-20261017-1, T-20261017-2, L-011
+- files: SKILL.md (frontmatter description)
+- "text a person will read" became "text a person will read, however short", the kinds list gained letters and messages, and it quotes 'write me a quick email to...'. The description grew from 361 to 427 characters (59 to 69 words). trigger-2 went from 0 of 3 to 3 of 3; no decoy fired.
+
 ### C-20261017-5 · 2026-10-17 · Search plan names the official forums and per-model sources
 - because: R-20261017-7, R-20261017-4, R-20261017-3 (refresh practice: forum lines were missing)
 - files: RESEARCH.md (Search plan: Subject, Tooling, Best sources; Open questions)

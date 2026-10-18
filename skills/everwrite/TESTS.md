@@ -8,6 +8,13 @@ Entry shape: `### T-YYYYMMDD-n · date · harness · env · passed/total`, then 
 
 ## Runs
 
+### T-20261017-2 · 2026-10-17 · headless `claude -p` 2.1.281 (stream-json, fresh folder per run, hooks off), installed user skill · owner-pc · 5/5
+- Before C-20261017-6: trigger-1 3/3, trigger-2 0/3 (no tool call in any run: undertrigger reproduced), trigger-3 3/3, decoy-1 0/3, decoy-2 0/3. The same description through `--plugin-dir` gave trigger-1 1/3 (editwright loaded instead twice), so that harness was dropped (L-012).
+- After C-20261017-6: trigger-1 3/3, trigger-2 3/3, trigger-3 3/3, decoy-1 0/3, decoy-2 0/3.
+- Held-out, after only: a text to a neighbour about parking fired 3/3; a Python rename script and a mutex-versus-semaphore question fired 0/3 each.
+- Action and outcome cases not rerun: only the description changed.
+- led to: L-011, L-012, C-20261017-6
+
 ### T-20261017-1 · 2026-10-17 · unittest plus evergreen-tester runs (fresh context) and headless `claude -p` 2.1.281 for the trigger · owner-pc · 2/3 cases
 - After the refresh (C-20261017-1 to C-20261017-4): self-test 30 of 30; repo prose check 0 strong. action-1 1/1 on the refreshed copy (tells.py on the fixture before and after, 27 strong to 0, every fact kept). outcome-1 1/1 (reply piped to the checker: 0 strong, 0 weak; seven facts matched; fixture hash unchanged; one-sentence change note).
 - trigger-2 · trigger · no-trigger · 0 of 3 headless runs made any tool call; each wrote the landlord email directly, though the stream listed everwrite's description. The description did not change in this refresh, so this is the weakness HANDOFF already named (2 of 3 on 2026-09-25), now worse. Cost about 0.59 USD.
