@@ -12,40 +12,40 @@
   "protocol": "plugin",
   "source": null,
   "topic": "the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse",
-  "tier": "moderate",
-  "interval_days": 20.0,
-  "last_checked": "2026-09-25",
-  "next_due": "2026-10-17",
+  "tier": "fast",
+  "interval_days": 10.0,
+  "last_checked": "2026-10-17",
+  "next_due": "2026-10-28",
   "verify_at_use": false,
   "volatile_claims": [
     {
-      "claim": "Claude uses em dashes more than professional writers, while newer GPT models suppress them (Economist, July 2026, via Wikipedia)",
-      "checked": "2026-09-25",
+      "claim": "Em dashes are a historical tell: Wikipedia moved the sign to Historical indicators 2026-10-07; Opus 5.5 uses 0.015 per 1,000 words (Graphite, Oct 2026); only older Claude models overuse them",
+      "checked": "2026-10-17",
       "recheck_days": 60.0
     },
     {
-      "claim": "blader/humanizer (3.0.0) is the most-starred prose humanizer skill; none of the top three ships a deterministic checker",
-      "checked": "2026-09-25",
+      "claim": "blader/humanizer (3.1.0) is the most-starred prose humanizer skill and ships no checker; maintained checkers exist outside the skills (tbhb/vale-ai-tells, berelevant-ai/slopless)",
+      "checked": "2026-10-17",
       "recheck_days": 30.0
     },
     {
-      "claim": "Mid-2025-on stock words per Wikipedia: emphasizing, enhance, highlighting, showcasing, plus canned notability wording",
-      "checked": "2026-09-25",
-      "recheck_days": 60.0
+      "claim": "Wikipedia eras: GPT-5 words (emphasizing, enhance, highlighting, showcasing) mid-2025 to mid-2026; GPT-6 era list added Oct 2026 by a temporary account (dependable, quietly, matters, steady...)",
+      "checked": "2026-10-17",
+      "recheck_days": 30.0
     },
     {
       "claim": "Claude text is watermarked (SynthID-Text style, no added characters) for models from 2026-08-02; older models by December 2026; detection is a private preview",
-      "checked": "2026-09-28",
+      "checked": "2026-10-17",
       "recheck_days": 30.0
     },
     {
-      "claim": "ChatGPT text carries no watermark; OpenAI says it aims to add text marking",
-      "checked": "2026-09-28",
+      "claim": "OpenAI textGrain watermarks ChatGPT and Codex text for EU users (rollout from 2026-10-05; API opt-in elsewhere); detection limited to approved researchers",
+      "checked": "2026-10-17",
       "recheck_days": 30.0
     },
     {
-      "claim": "No public checker exists for deployed text watermarks (SynthID Detector is waitlist-only)",
-      "checked": "2026-09-28",
+      "claim": "No public checker exists for deployed text watermarks; SynthID Detector is public since 2026-10-07 for images, video and audio only",
+      "checked": "2026-10-17",
       "recheck_days": 60.0
     }
   ],
@@ -75,26 +75,34 @@
       "m": 0.4,
       "interval_after": 20.0,
       "note": "2026-09-25 refresh at conversion: Wikipedia rev 2026-09-24, blader/humanizer 3.0.0, no-ai-slop, stop-slop; checker added; cost: searches 3 (gh) · fetches 5"
+    },
+    {
+      "date": "2026-10-17",
+      "m": 0.6,
+      "interval_after": 10.0,
+      "note": "2026-10-17 refresh: OpenAI textGrain EU watermark, SynthID Detector public for media not text, Wikipedia em dash to Historical + GPT-6 era, Opus 5.5 phrase tells (Graphite), humanizer 3.1.0, vale-ai-tells/slopless pointed to, rhythm check added; cost: searches 20 · fetches 37 · tool calls 64"
     }
   ],
   "counts": {
     "learnings": 10,
-    "changes": 11,
-    "research": 12,
-    "tests": 4
+    "changes": 16,
+    "research": 22,
+    "tests": 5
   },
   "consolidate_every": 25,
   "tests": {
-    "last_run": "2026-09-25T22:15",
-    "harness": "claude -p stream-json runner (fresh context per run, hooks off)",
+    "last_run": "2026-10-17T00:00",
+    "harness": "evergreen-tester runs (fresh context) and headless claude -p 2.1.281 for triggers",
     "env": "owner-pc",
     "cases": 8,
     "passed": 7,
-    "failed": 0,
-    "failing": [],
+    "failed": 1,
+    "failing": [
+      "trigger-2"
+    ],
     "last_failure": {
-      "date": "2026-09-25",
-      "note": "7 cases x3 + 2 baselines; outcome-1 change note ran 3-5 sentences in 3/3 runs (Output asks for one line)"
+      "date": "2026-10-17",
+      "note": "trigger-2 0/3: a short landlord email was written without loading the skill (description unchanged; was 2/3 on 2026-09-25)"
     },
     "research_after_days": null
   }
