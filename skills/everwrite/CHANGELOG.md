@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261018-1 · 2026-10-18 · Release 1.1.0
+- because: user request (release the unreleased checker changes)
+- files: plugin.json, .claude-plugin/plugin.json (version)
+- Version 1.0.0 to 1.1.0, tag v1.1.0. Ships every change since the v1.0.0 tag: the 2026-10-17 refresh (C-20261017-1 to -5: new phrase and closer tells, the `uniform-rhythm` rule, the vale-ai-tells and slopless pointer, the retired dash tell) and the description tuned for short emails and messages (C-20261017-6). Minor, not patch, because tells.py flags new patterns that 1.0.0 passed.
+
 ### C-20261017-6 · 2026-10-17 · Description covers short emails and messages
 - because: T-20261017-1, T-20261017-2, L-011
 - files: SKILL.md (frontmatter description)
