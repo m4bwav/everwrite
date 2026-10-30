@@ -14,8 +14,8 @@
   "topic": "the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse",
   "tier": "fast",
   "interval_days": 10.0,
-  "last_checked": "2026-10-17",
-  "next_due": "2026-10-28",
+  "last_checked": "2026-10-30",
+  "next_due": "2026-11-08",
   "verify_at_use": false,
   "volatile_claims": [
     {
@@ -81,12 +81,18 @@
       "m": 0.6,
       "interval_after": 10.0,
       "note": "2026-10-17 refresh: OpenAI textGrain EU watermark, SynthID Detector public for media not text, Wikipedia em dash to Historical + GPT-6 era, Opus 5.5 phrase tells (Graphite), humanizer 3.1.0, vale-ai-tells/slopless pointed to, rhythm check added; cost: searches 20 · fetches 37 · tool calls 64"
+    },
+    {
+      "date": "2026-10-30",
+      "m": 0.2,
+      "interval_after": 10.0,
+      "note": "Wikipedia markup split to WP:AIMARKUP, emoji tagged historical; no SKILL change; cost: searches 1 · fetches 1 · tool calls 3"
     }
   ],
   "counts": {
     "learnings": 12,
     "changes": 17,
-    "research": 22,
+    "research": 23,
     "tests": 6
   },
   "consolidate_every": 25,
