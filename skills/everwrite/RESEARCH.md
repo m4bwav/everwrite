@@ -2,7 +2,7 @@
 
 Findings that back [SKILL.md](SKILL.md). Changes they caused are logged in [CHANGELOG.md](CHANGELOG.md); procedural lessons live in [LEARNINGS.md](LEARNINGS.md); test runs and their evidence in [TESTS.md](TESTS.md); schedule and state in `evergreen.json`. Protocol: [MAINTENANCE.md](MAINTENANCE.md).
 
-Topic: the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse. Tier `fast` since 2026-10-17 (was `moderate`). Last refresh 2026-10-30; next due in `evergreen.json`.
+Topic: the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse. Tier `fast` since 2026-10-17 (was `moderate`). Last refresh 2026-11-08; next due in `evergreen.json`.
 
 <!-- tells: off -->
 ## Current understanding
@@ -39,7 +39,7 @@ Four tracks; every refresh runs at least one query on each (scope each to the pe
 
 Subject (the goal and the latest thinking on reaching it):
 
-- Fetch https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing and diff its section list and "Words to watch" lines against Current understanding; check the Historical indicators section for tells that retired. The page is over 250k characters and fetch tools summarise it badly, so read the history first (https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=history: dates, editors, edit summaries) and fetch only the changed sections; markup signs live on the subpage https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing/Markup (WP:AIMARKUP) since 2026-10-23
+- Fetch https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing and diff its section list and "Words to watch" lines against Current understanding; check the Historical indicators section for tells that retired. The page is over 250k characters and fetch tools summarise it badly, so read the history first (https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=history: dates, editors, edit summaries) and fetch only the changed sections; markup signs live on the subpage https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing/Markup (WP:AIMARKUP) since 2026-10-23, style signs on https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing/Style since 2026-10-31; the MediaWiki API (`api.php?action=query&prop=revisions&rvend=<last_checked>&rvprop=timestamp|comment`) lists the edits in one call
 - Official forums, announcements first, then open proposals: https://en.wikipedia.org/wiki/Wikipedia_talk:Signs_of_AI_writing, https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup, https://github.com/blader/humanizer/issues and its pull requests (proposed tells land there weeks before a release)
 - Per-model counts: https://graphite.io/five-percent/research (dated per-model tell reports with raw data), Arena posts via news coverage; for OpenAI use the cdn.openai.com PDFs, since openai.com returns 403
 - `"signs of AI writing" OR "AI writing tells" new patterns <year>`; `"em dash" Claude OR ChatGPT study <year>`
@@ -81,6 +81,14 @@ Best sources (primary first): Wikipedia "Signs of AI writing" and its cited stud
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
+### R-20261108-1 · 2026-11-08 · Subject: Wikipedia moves promotional tone to Historical indicators
+
+- Summary: 36 edits since 2026-10-30 (read through the MediaWiki API). On 2026-11-03 "Promotional and advertisement-like language" moved to Historical indicators, dated 2023 to 2025 ("no longer in step with what we're seeing, and tellingly all examples were old"). Style signs split to the subpage Wikipedia:Signs_of_AI_writing/Style (10-31); new sections on content bias (WP:AIBIAS, pro-authoritarian bias), undue emphasis on primary or tertiary sources, URL placeholders and a collaborative-communication example. The checker keeps its sales-language rule as `strong`: puffery is weak prose whoever wrote it, the same reasoning that kept the zero-dash default. No new prose tell the skill lacks. Tooling: blader/humanizer still 3.1.0, no commits since 10-30. Testing: nothing new.
+- Track: subject, tooling
+- Sources: https://en.wikipedia.org/w/index.php?title=Wikipedia:Signs_of_AI_writing&action=history, https://github.com/blader/humanizer/releases
+- Magnitude: 0.25
+- applied: none (research and search plan only)
+
 ### R-20261030-1 · 2026-10-30 · Subject: Wikipedia splits markup tells to WP:AIMARKUP and tags emoji-as-formatting historical
 
 - Summary: 46 edits since 2026-10-17 (history read, sections not fetched). Markup signs moved to a subpage, WP:AIMARKUP (2026-10-23; the new mark-tag highlighting section moved there 10-29); "Emoji as formatting" tagged possibly historical (10-21); "Hedging disclaimers about source availability" broken down by timeframe; the non-native-English note deleted as no longer applying (10-20); the AI vocabulary density section flagged unsourced; new comment-specific indicators. No new prose tell the skill lacks; the no-emoji formatting rule stays (good style, not only a tell). Search plan now names WP:AIMARKUP. Tooling: blader/humanizer still 3.1.0 (one manifest fix). Testing: nothing new.
