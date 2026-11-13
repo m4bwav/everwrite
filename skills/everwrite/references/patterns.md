@@ -21,6 +21,7 @@ Staged setups and faux insight.
 Arguing with no one.
 - Before: "A tempting approach would be to restart the service nightly, but that drops sessions. Tokens rotate in place."
 - After: "Tokens rotate in place, so sessions survive."
+- Keep or cut: if you can name who holds the objection (a reader, a source, an earlier decision), keep it and answer it with a reason. If nobody holds it, cut it.
 
 Closers, fragments and kickers.
 - Before: "Caching cuts repeat work.\n\nThat's the real win."
@@ -65,6 +66,7 @@ Synonym cycling.
 Repeated openings.
 - Before: "She noted the door. She noted the lock. She filed both away."
 - After: "She noted the door and its lock, then filed both away."
+- Merge the sentences, or reword the subject but keep the topic. Rotating in unrelated subjects just to vary the first word scatters the paragraph.
 
 Uniform rhythm. Newer models (GPT-6 era per Wikipedia, October 2026) write sentences that all fall between about 8 and 20 words, with more periods and commas. A cleanup pass that removes words and dashes makes this worse: in a blind test on blader/humanizer (issue #229) uniform-beat hits rose from 60 to 101 while vocabulary hits fell to 0. `tells.py` flags a paragraph of five or more near-equal sentences (`uniform-rhythm`, weak).
 - Before: "The parser reads each line of the input file. It stores every result in a local cache. The cache lives on the same local disk. Each new run checks that cache before parsing. Any miss goes straight back to the parser."
@@ -96,6 +98,10 @@ Knowledge-limit guesses.
 
 Writing for the wrong reader (blader/humanizer 3.1.0): re-explaining what the reader already knows, or opening a reply by restating the user.
 - Before: "You mentioned that the build is slow. Builds compile every file, and slow builds cost time." After: "The build recompiles every file because the cache key includes the timestamp."
+
+The story of the search. A report body built from "First I", "Then I", "Next I", "Finally I" tells how the work went instead of what it found. Lead with the result and keep only the steps a reader must repeat. Logs, changelogs and handoff notes are exempt, because there the sequence is the content.
+- Before: "First I read the config. Then I traced the call. Finally I found the cache key includes the timestamp."
+- After: "The cache key includes the timestamp, so every build misses the cache."
 
 Writing about the previous version (in docs, not changelogs).
 - Before: "This function replaces the old approach of scanning every item."

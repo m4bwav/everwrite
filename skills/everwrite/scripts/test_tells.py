@@ -95,6 +95,8 @@ class Rules(unittest.TestCase):
         self.assertEqual([h["category"] for h in hits], ["long-sentence"])
         self.assertNotIn("long-sentence", categories(long, max_words=40))
         self.assertIn("repeated-opening", categories("She ran. She hid. She waited."))
+        hits, _ = tells.check_text("She ran. She hid. She waited.")
+        self.assertIn("keep the topic", [h for h in hits if h["category"] == "repeated-opening"][0]["hint"])
 
     def test_markup_residue_sees_urls(self):
         self.assertIn(("markup", "strong"), cats("See [x](https://example.com/a?utm_source=chatgpt.com)."))
