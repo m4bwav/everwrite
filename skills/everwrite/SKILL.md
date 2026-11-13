@@ -50,9 +50,9 @@ These need company from other tells in the same passage before you act:
 - Avoiding is and has: "serves as", "stands as", "boasts", "features", "offers".
 - Vague association: "associated with", "connected to" where the source names the relationship.
 - Synonym cycling: "the tool", "the platform", "the solution" for one thing. Pick a name and repeat it.
-- Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt.
+- Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt. A limiting condition ("unless", "assuming", "in this sample") is content and survives every edit; a vague quantity ("most", "often") takes the source's number if one exists, else stays, and a number is never invented.
 - Repeated sentence openings, uniform sentence length (newer models keep nearly every sentence between 8 and 20 words; a cleanup that only removes words and dashes leaves this behind).
-- Writing for the wrong reader: re-explaining what the reader already knows, or opening a reply by restating the user ("You mentioned that").
+- Writing for the wrong reader: re-explaining what the reader already knows, or opening by restating the user ("You mentioned that") or echoing the wording of the request.
 - The same thing twice in a row: a heading that repeats the heading above it or the title the host already prints (a GitHub wiki prints the file name, so `# Getting started` under it shows the title twice), or a paragraph repeated word for word. People almost never do this.
 - False agency: "the data tells us", "the decision emerged". Name who acted.
 - Docs that describe the previous version ("replaces the old approach") outside a changelog.
@@ -62,10 +62,11 @@ These need company from other tells in the same passage before you act:
 
 - One idea per sentence. Most sentences under 20 words; one over 30 has to earn it. Vary the length: mix short sentences with longer ones, because a page of sentences all 12 to 18 words long is a tell of its own.
 - Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph.
-- Plain words (use, help, show, big) and verbs that do the work ("decided", not "made a decision").
+- Plain words (use, help, show, big). In a sentence's first few words, say who did what: a person or thing as subject, the action as a verb ("the team decided", not "a decision was made").
+- Known before new: open on something the reader has already met; put the new term, the number or the long list last.
 - Define jargon and acronyms on first use.
 - Portability test: a sentence that would fit unchanged in a document about another product, person or place is filler. Replace it with a fact, number, name or example, or cut it.
-- Contractions where the register allows. Active voice with a human subject.
+- Contractions where the register allows. Active or passive: choose the form that puts the known thing first.
 - Match the author. With a writing sample, copy its sentence length, punctuation and favourite words over these defaults. Without one, take the voice from the genre: reference and technical text stays neutral and plain; blogs and emails keep opinions, asides and doubt.
 
 ### Don't over-correct
@@ -90,7 +91,7 @@ A team that already lints docs in CI can use a maintained rule set there instead
 
 ## Step 4: audit what a script can't see
 
-Reread once and answer two questions. What still reads as generated (structure, rhythm, staging, a triad, a kicker)? Did the rewrite add or drop any fact, name, number, date or claim? Fix what you find.
+For a file, check structure before sentences: from the opening, each section's first sentence and the close alone, can you restate the point? Do the point's key terms recur in most paragraphs? Then reread once and answer two questions. What still reads as generated (structure, rhythm, staging, a triad, a kicker)? Did the rewrite add or drop any fact, name, number, date or claim? Fix what you find.
 
 ## Output
 

@@ -1,10 +1,10 @@
 # Handoff
 
-Updated 2026-10-18. Read this first, then [log.md](log.md); the skill's own history is in `skills/everwrite/` (CHANGELOG, LEARNINGS, TESTS, RESEARCH).
+Updated 2026-11-13. Read this first, then [log.md](log.md); the skill's own history is in `skills/everwrite/` (CHANGELOG, LEARNINGS, TESTS, RESEARCH).
 
 ## Current state
 
-- Public repository m4bwav/everwrite since 2026-09-25, version 1.1.0 (released 2026-10-18, tag v1.1.0). CI (tests.yml) passes on Linux, macOS and Windows with Python 3.9 and 3.13.
+- Public repository m4bwav/everwrite since 2026-09-25, version 1.2.0 (released 2026-11-13, tag v1.2.0: Craft of Research book track, C-20261113-1). CI (tests.yml) passes on Linux, macOS and Windows with Python 3.9 and 3.13.
 - Skill suite: 7/7 (T-20260925-4) with a headless `claude -p` runner (LEARNINGS L-005). outcome-1 failed first (change note too long) and was fixed by C-20260925-7. trigger-2 (a short email) fell to 0 of 3 on 2026-10-17 and was tuned the same day (C-20261017-6): 3 of 3, decoys 0 of 3 (T-20261017-2). Trigger tests run against the installed user skill, not `--plugin-dir` (L-012).
 - The older write-human skill is switched off in Claude Code (`skillOverrides`); its hosted copy still exists in the account.
 - Evergreen: refreshed 2026-10-17 (m 0.6: OpenAI text watermark, dash tell retired on Wikipedia, new phrase and rhythm rules in tells.py), next due in `skills/everwrite/evergreen.json`. The changed checker shipped in 1.1.0.

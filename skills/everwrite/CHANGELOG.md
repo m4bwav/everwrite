@@ -4,6 +4,16 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261113-2 · 2026-11-13 · Release 1.2.0
+- because: book track craft-of-research (C-20261113-1)
+- files: plugin.json, .claude-plugin/plugin.json (version)
+- Version 1.1.0 to 1.2.0, tag v1.2.0. Minor: SKILL.md gains readability and audit rules; the checker changes only a hint.
+
+### C-20261113-1 · 2026-11-13 · Readability and audit rules from The Craft of Research; three checker rules tested and skipped
+- because: R-20261113-1 (Booth, Colomb and Williams, The Craft of Research, 3rd ed., 2008; book rules, unverified on our tools except where R-20261113-1 measured them)
+- files: SKILL.md (Step 2: need-company list, writing for the wrong reader and stacked qualifiers; Readability: who-did-what bullet replaces verbs-that-do-the-work, known before new, active or passive by known-first; Step 4: structure check for files), references/patterns.md (Arguing with no one: keep-or-cut test; Repeated openings: keep the topic; new "The story of the search" entry), scripts/tells.py (`repeated-opening` hint), scripts/test_tells.py (hint case)
+- Where the book conflicts with everwrite, everwrite's rules win: one hedge per claim stays, with limiting conditions kept as content and vague quantities given the number test; objections are kept only when their holder can be named. Weak rules `nominal-subject`, `vague-quantity` and `process-narration` were measured and not shipped (numbers in R-20261113-1). SKILL.md grew by 1 line (105 to 106).
+
 ### C-20261018-1 · 2026-10-18 · Release 1.1.0
 - because: user request (release the unreleased checker changes)
 - files: plugin.json, .claude-plugin/plugin.json (version)

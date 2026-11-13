@@ -419,7 +419,7 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None):
             first = WORD.findall(sentence)[:1]
             openings.append((first[0].lower() if first else "", lineno))
             if len(openings) >= 3 and openings[-1][0] and openings[-1][0] == openings[-2][0] == openings[-3][0]:
-                add(lineno, "weak", "repeated-opening", openings[-1][0], "merge or vary the openings")
+                add(lineno, "weak", "repeated-opening", openings[-1][0], "merge them, or reword the subject but keep the topic")
             lengths.append((count, lineno))
         # Uniform rhythm: five or more sentences of nearly the same length (spread under a quarter of the mean).
         # A pass that clears words and dashes tends to leave this behind (R-20261017-6).
