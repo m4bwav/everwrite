@@ -50,7 +50,7 @@ These need company from other tells in the same passage before you act:
 - Avoiding is and has: "serves as", "stands as", "boasts", "features", "offers".
 - Vague association: "associated with", "connected to" where the source names the relationship.
 - Synonym cycling: "the tool", "the platform", "the solution" for one thing. Pick a name and repeat it.
-- Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt. A limiting condition ("unless", "assuming", "in this sample") is content and survives every edit; a vague quantity ("most", "often") takes the source's number if one exists, else stays, and a number is never invented.
+- Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt. A limiting condition ("unless", "assuming", "in this sample") is content and survives every edit; a vague quantity ("most", "often") takes the source's number if one exists, else stays, and a number is never invented. An empty "could", "may" or "might" takes the status the source gives (planned, expected, under discussion).
 - Repeated sentence openings, uniform sentence length (newer models keep nearly every sentence between 8 and 20 words; a cleanup that only removes words and dashes leaves this behind).
 - Writing for the wrong reader: re-explaining what the reader already knows, or opening by restating the user ("You mentioned that") or echoing the wording of the request.
 - The same thing twice in a row: a heading that repeats the heading above it or the title the host already prints (a GitHub wiki prints the file name, so `# Getting started` under it shows the title twice), or a paragraph repeated word for word. People almost never do this.
@@ -61,8 +61,8 @@ These need company from other tells in the same passage before you act:
 ### Readability
 
 - One idea per sentence. Most sentences under 20 words; one over 30 has to earn it. Vary the length: mix short sentences with longer ones, because a page of sentences all 12 to 18 words long is a tell of its own.
-- Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph.
-- Plain words (use, help, show, big). In a sentence's first few words, say who did what: a person or thing as subject, the action as a verb ("the team decided", not "a decision was made").
+- Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph. In an email or message the news or the ask is the first sentence, and the subject line names it.
+- Plain words (use, help, show, big; "can", not "has the ability to"). Deletion test: drop a phrase; if the sentence loses no meaning, leave it out. In a sentence's first few words, say who did what: a person or thing as subject, the action as a verb ("the team decided", not "a decision was made").
 - Known before new: open on something the reader has already met; put the new term, the number or the long list last.
 - Define jargon and acronyms on first use.
 - Portability test: a sentence that would fit unchanged in a document about another product, person or place is filler. Replace it with a fact, number, name or example, or cut it.
@@ -74,7 +74,7 @@ These need company from other tells in the same passage before you act:
 - Keep every real claim. Pull the fact out of an inflated sentence instead of deleting both.
 - One listed word, one "however", one dash inside a quotation is not a tell. Clusters are.
 - Human habits are not tells: "very", "perhaps", "I think", "tends to", superlatives, a real aside, an odd specific detail, mixed feelings. Keep them.
-- Don't flatten deliberate style or rewrite strong human sentences.
+- Don't flatten deliberate style or rewrite strong human sentences. In edit mode, a house format the author names (bold signpost labels in a newsletter, say) is their style, not a tell.
 
 ### Watermarks are a separate thing
 

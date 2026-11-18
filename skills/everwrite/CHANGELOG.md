@@ -4,6 +4,16 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261118-2 · 2026-11-18 · Release 1.2.1
+- because: C-20261118-1
+- files: plugin.json, .claude-plugin/plugin.json (version)
+- Version 1.2.0 to 1.2.1, tag v1.2.1. Patch: guidance lines only; the checker is unchanged.
+
+### C-20261118-1 · 2026-11-18 · Message, modal and deletion-test rules from Smart Brevity and Becker
+- because: R-20261118-1 (book rules, unverified)
+- files: SKILL.md (Step 2 stacked qualifiers: empty modals; Readability: email first sentence and subject line, plain words with "can" and the deletion test; Don't over-correct: named house format in edit mode)
+- Four sentences added to existing bullets; SKILL.md stays at 106 lines. Signpost labels stay a tell when drafting.
+
 ### C-20261113-2 · 2026-11-13 · Release 1.2.0
 - because: book track craft-of-research (C-20261113-1)
 - files: plugin.json, .claude-plugin/plugin.json (version)
