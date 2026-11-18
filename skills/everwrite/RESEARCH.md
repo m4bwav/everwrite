@@ -81,6 +81,12 @@ Best sources (primary first): Wikipedia "Signs of AI writing" and its cited stud
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
+### R-20261118-1 · 2026-11-18 · Practice: Smart Brevity and Writing for Social Scientists on short messages and cuts
+- Sources: VandeHei, Allen and Schwartz, Smart Brevity (2022), ch. 8, 10, 15, 23; Becker, Writing for Social Scientists, 2nd ed. (University of Chicago Press, 2007), ch. 4. Book rules, unverified on our tools; no checker rule added.
+- Adopted as guidance: an email or message puts the news or the ask in its first sentence and its subject line names it; an empty "could/may/might" takes the status the source states; the deletion test (cut a phrase, keep the cut if no meaning is lost); ability phrases become "can".
+- Conflict kept on everwrite's side: Smart Brevity's bold signpost labels ("Why it matters:") stay a staged-setup tell when drafting. In edit mode a house format the author names is their style.
+- Magnitude 0.1 (guidance added; no core claim changed).
+
 ### R-20261113-1 · 2026-11-13 · Practice: The Craft of Research on sentences and structure; three checker rules measured
 - Source: Booth, Colomb and Williams, The Craft of Research, 3rd ed. (University of Chicago Press, 2008), ch. 8 to 14 and 17. Book rules, unverified on our tools unless measured below.
 - Adopted as guidance: who did what in a sentence's opening words; known before new, heavy last; active or passive chosen by which puts the known thing first; structure before sentences (restate the point from the opening, section openings and close; key terms recur); limiting conditions are content; objections kept only when their holder can be named; process narration in a report body is a named failure.
