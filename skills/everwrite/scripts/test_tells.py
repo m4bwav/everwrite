@@ -244,6 +244,33 @@ class Cli(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("repeated-heading", result.stdout)
 
+    def test_wordy_and_announcer(self):
+        self.assertIn(("wordy", "weak"), cats("We waited for a long period of time before the merge.\n"))
+        self.assertIn(("wordy", "weak"), cats("Despite the fact that it failed, we shipped.\n"))
+        self.assertIn(("announcer", "weak"), cats("This section describes the cache.\n"))
+        self.assertIn(("announcer", "weak"), cats("The cache has been observed to drop entries.\n"))
+        clean = "The cache drops entries after 41 seconds. Raise the limit to keep them.\n"
+        self.assertFalse({"wordy", "announcer"} & categories(clean))
+
+    def test_extra_checks_off_by_default(self):
+        neg = "No user can not run it without a key.\n"
+        slow = "The new retry policy for a failed upload on a slow mobile network in a rural area now waits.\n"
+        self.assertNotIn("negative-stack", categories(neg))
+        self.assertNotIn("slow-start", categories(slow))
+        self.assertIn("negative-stack", categories(neg, extra=True))
+        self.assertIn("slow-start", categories(slow, extra=True))
+        quiet = "Uploads retry twice. If the network is slow, the client waits longer.\n"
+        self.assertFalse({"negative-stack", "slow-start"} & categories(quiet, extra=True))
+
+    def test_repeated_opening_keeps_topic_string(self):
+        topic = "The parser reads a line. The parser splits it. The parser returns tokens.\n"
+        self.assertNotIn("repeated-opening", categories(topic))
+        name = "We like Harbor. Harbor builds fast. Harbor caches layers. Harbor ships images.\n"
+        self.assertNotIn("repeated-opening", categories(name))
+        drift = "The parser reads a line. The tokens follow. The result is cached.\n"
+        self.assertIn("repeated-opening", categories(drift))
+        self.assertIn("repeated-opening", categories("It reads. It splits. It returns.\n"))
+
     def test_main_in_process(self):
         buf = io.StringIO()
         with redirect_stdout(buf):

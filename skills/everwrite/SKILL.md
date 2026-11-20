@@ -51,7 +51,7 @@ These need company from other tells in the same passage before you act:
 - Vague association: "associated with", "connected to" where the source names the relationship.
 - Synonym cycling: "the tool", "the platform", "the solution" for one thing. Pick a name and repeat it.
 - Stacked qualifiers ("could potentially"). One hedge per claim, only for real doubt. A limiting condition ("unless", "assuming", "in this sample") is content and survives every edit; a vague quantity ("most", "often") takes the source's number if one exists, else stays, and a number is never invented. An empty "could", "may" or "might" takes the status the source gives (planned, expected, under discussion).
-- Repeated sentence openings, uniform sentence length (newer models keep nearly every sentence between 8 and 20 words; a cleanup that only removes words and dashes leaves this behind).
+- Repeated sentence openings (a paragraph that keeps one topic as its subject is fine), uniform sentence length (newer models keep nearly every sentence between 8 and 20 words; a cleanup that only removes words and dashes leaves this behind).
 - Writing for the wrong reader: re-explaining what the reader already knows, or opening by restating the user ("You mentioned that") or echoing the wording of the request.
 - The same thing twice in a row: a heading that repeats the heading above it or the title the host already prints (a GitHub wiki prints the file name, so `# Getting started` under it shows the title twice), or a paragraph repeated word for word. People almost never do this.
 - False agency: "the data tells us", "the decision emerged". Name who acted.
@@ -61,12 +61,12 @@ These need company from other tells in the same passage before you act:
 ### Readability
 
 - One idea per sentence. Most sentences under 20 words; one over 30 has to earn it. Vary the length: mix short sentences with longer ones, because a page of sentences all 12 to 18 words long is a tell of its own.
-- Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph. In an email or message the news or the ask is the first sentence, and the subject line names it.
+- Paragraphs of three to five sentences. Lead with the point, in the document and in each paragraph. In an email or message the news or the ask is the first sentence, and the subject line names it. A report, proposal or PR description opens with the problem (what is wrong and what it costs), then the point.
 - Plain words (use, help, show, big; "can", not "has the ability to"). Deletion test: drop a phrase; if the sentence loses no meaning, leave it out. In a sentence's first few words, say who did what: a person or thing as subject, the action as a verb ("the team decided", not "a decision was made").
 - Known before new: open on something the reader has already met; put the new term, the number or the long list last.
 - Define jargon and acronyms on first use.
 - Portability test: a sentence that would fit unchanged in a document about another product, person or place is filler. Replace it with a fact, number, name or example, or cut it.
-- Contractions where the register allows. Active or passive: choose the form that puts the known thing first.
+- Contractions where the register allows. Active or passive: choose the form that puts the known thing first; passive also fits when the actor is unknown or beside the point. Say it in the affirmative unless the negative is the point. In narration, keep an adjective only when it carries a fact.
 - Match the author. With a writing sample, copy its sentence length, punctuation and favourite words over these defaults. Without one, take the voice from the genre: reference and technical text stays neutral and plain; blogs and emails keep opinions, asides and doubt.
 
 ### Don't over-correct
@@ -83,7 +83,7 @@ Claude (models from 2026-08-02; older ones by December 2026), Gemini and, since 
 
 ## Step 3: mechanical check
 
-Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--wiki` (the file name is the page title the host prints, so a first heading repeating it is strong), `--fix-hidden`, `--json`, `--list`.
+Run `python scripts/tells.py <file>` from this skill's folder (or give the script's full path; `-` reads stdin; use `python3` where `python` is missing). It needs only Python 3.9 or later. It skips frontmatter, code, comments and URLs, plus any region between lines holding only `<!-- tells: off -->` and `<!-- tells: on -->` (put quoted examples there). It prints one line per hit (`file:line: severity category: match (hint)`) and exits 1 while any strong hit remains. Fix every strong hit, judge weak ones in context, and run it again until it exits 0. Its last line (`tells: N strong, N weak, ...`) is the evidence the check ran. It also reads every line, code included, for invisible characters (zero-width, soft hyphen, bidi controls, tag and variation-selector runs: strong) and odd spaces (no-break, narrow no-break, figure: weak). `--fix-hidden` strips them in place in one pass; don't hunt for them by eye. Flags: `--max-words N` (default 30), `--allow-dashes`, `--extra` (noisy checks for a slow edit: three negatives in a sentence, over ten words before the verb), `--wiki` (the file name is the page title the host prints, so a first heading repeating it is strong), `--fix-hidden`, `--json`, `--list`.
 
 Checking the script's output costs far fewer tokens than rereading a long document for dashes and word lists; spend the reread on Step 4.
 

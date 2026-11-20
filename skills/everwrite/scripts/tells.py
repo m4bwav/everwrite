@@ -108,7 +108,19 @@ RULES = [
     ("qualifier", "weak", r"\b(?:could|might|may) (?:potentially|possibly)\b|\bit could be argued\b|\barguably\b", "one hedge, only for real doubt"),
     ("adverb", "weak", r"\b(?:really|truly|actually|literally|genuinely|simply|fundamentally|incredibly|quietly|seamlessly|importantly)\b", "cut unless it carries meaning"),
     ("transition", "weak", r"(?:^|[.!?]\s+)(?:additionally|moreover|furthermore|notably),", "use also or and, or merge the sentences"),
+
+    # Williams, Style: Lessons in Clarity and Grace, lesson 7 (concision): redundant categories, phrase for a word,
+    # topic announcers and attribution metadiscourse.
+    ("wordy", "weak", r"\b(?:period of time|(?:red|blue|green|yellow|pink|black|white|grey|gray|large|small|big|tiny|huge|round|square) in (?:colou?r|size|shape)|in an? \w+ (?:manner|fashion)|of an? \w+ nature|end result|final outcome|past history|future plans|each and every|full and complete|first and foremost)\b", "drop the category or the repeat word"),
+    ("wordy", "weak", r"\b(?:despite|in spite of) the fact that\b|\bdue to the fact that\b|\bin the event that\b|\bin a (?:situation|case) where\b|\bthere is a need for\b|\bin a position to\b|\bit is possible that\b|\bprior to\b|\bhas the ability to\b|\bin order to\b|\bfor the purpose of\b|\bwith regard to\b|\bconcerning the matter of\b", "one word: even though, because, if, when, must, can, may, before, to, about"),
+    ("announcer", "weak", r"\bthis (?:section|document|page|post|article|guide|chapter|essay|paper) (?:will )?(?:introduces?|discuss(?:es)?|covers?|describes?|explains?|outlines?|explores?)\b|\bin (?:this|the following) (?:section|document|post|article|guide|essay), (?:I|we) (?:will|'ll)\b|\bin regard(?:s)? to\b|\bso far as [^.!?]{1,40} is concerned\b", "fold the topic into the subject and say the point"),
+    ("announcer", "weak", r"\b(?:has|have) been (?:observed|noted|found|shown|reported) to\b|\bit (?:has been|is|was) (?:noted|observed|reported) that\b", "state the fact; name the source if it matters"),
 ]
+
+# Off by default (noisy on human prose; --extra turns them on). Measured in R-20261119-1.
+NEGATIVE = re.compile(r"\b(?:not|no|never|none|nothing|nor|cannot|without|unless|except|fail(?:s|ed)?|den(?:y|ies|ied)|prevent(?:s|ed)?|refus(?:e|es|ed)|preclude[sd]?)\b|n't\b", re.I)
+FINITE = re.compile(r"^(?:is|are|was|were|be|been|am|has|have|had|do|does|did|can|could|will|would|shall|should|may|might|must|'s|'re|'ve|'ll|'d|\w+ed|\w+[^s]s)$", re.I)
+SUBORD_OPEN = re.compile(r"^(?:if|when|while|because|since|although|though|after|before|once|until|unless|as|whether|for|in|on|at|by|with|from|to|of|during|after|over|under)$", re.I)
 
 SMALL_WORDS = {
     "a", "an", "the", "and", "or", "but", "nor", "for", "so", "yet", "of", "in", "on", "at", "to", "by",
@@ -302,9 +314,21 @@ def same_words(a, b):
     return bool(key(a)) and key(a) == key(b)
 
 
-def check_text(text, max_words=30, allow_dashes=False, page_title=None):
+DETERMINERS = {"the", "a", "an", "this", "that", "these", "those", "our", "my", "your", "its", "their"}
+
+
+def topic_string(word, two_words, prose):
+    """Williams (lesson 5): keep a paragraph's topic as its subject. Three openings on one noun phrase ("The
+    parser ... The parser") or on a name also used mid-sentence ("Harbor") are a topic string, not a tell."""
+    if word in DETERMINERS:
+        first = two_words[0].split()
+        return len(set(two_words)) == 1 and len(first) == 2 and first[1] not in SMALL_WORDS
+    return word[:1].isalpha() and bool(re.search(r"[a-z,;] %s\b" % re.escape(word.capitalize()), prose))
+
+
+def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=False):
     """page_title: the title the host prints above the page (a GitHub wiki prints the file name), which the
-    first heading must not repeat."""
+    first heading must not repeat. extra: also run the off-by-default checks (negative-stack, slow-start)."""
     hits = []
     words = 0
     notes = []
@@ -417,9 +441,22 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None):
             if count > max_words:
                 add(lineno, "weak", "long-sentence", "%d words: %s" % (count, sentence.strip()[:40]), "split it; one idea per sentence")
             first = WORD.findall(sentence)[:1]
-            openings.append((first[0].lower() if first else "", lineno))
-            if len(openings) >= 3 and openings[-1][0] and openings[-1][0] == openings[-2][0] == openings[-3][0]:
+            openings.append((first[0].lower() if first else "", lineno, " ".join(WORD.findall(sentence)[:2]).lower()))
+            if len(openings) >= 3 and openings[-1][0] and openings[-1][0] == openings[-2][0] == openings[-3][0] \
+                    and not topic_string(openings[-1][0], [o[2] for o in openings[-3:]], prose_text):
                 add(lineno, "weak", "repeated-opening", openings[-1][0], "merge them, or reword the subject but keep the topic")
+            if extra:
+                negs = NEGATIVE.findall(sentence)
+                if len(negs) >= 3:
+                    add(lineno, "weak", "negative-stack", "%d negatives: %s" % (len(negs), sentence.strip()[:40]),
+                        "say it in the affirmative; keep a negative only when it is the point")
+                tokens = WORD.findall(sentence)
+                if tokens and not SUBORD_OPEN.match(tokens[0]):
+                    lead = next((i for i, t in enumerate(tokens) if i and FINITE.match(t)
+                                 and tokens[i - 1].lower() not in DETERMINERS), None)
+                    if lead is not None and lead > 10:
+                        add(lineno, "weak", "slow-start", "%d words before the verb: %s" % (lead, sentence.strip()[:40]),
+                            "shorten the subject; get to the verb sooner")
             lengths.append((count, lineno))
         # Uniform rhythm: five or more sentences of nearly the same length (spread under a quarter of the mean).
         # A pass that clears words and dashes tends to leave this behind (R-20261017-6).
@@ -469,6 +506,7 @@ def print_rules():
         print("  %-16s %-6s %s" % (category, severity, hint))
     print("  %-16s %-6s %s" % ("vocabulary", "both", "strong when two or more distinct words share a paragraph"))
     print("  also: emoji, bold-label, title-case, divider, curly-quote, decoration, long-sentence, repeated-opening")
+    print("  with --extra (weak, noisy): negative-stack, slow-start")
     print("  also (strong): repeated-heading (a heading straight under one with the same words, or with --wiki the")
     print("  first heading repeating the page title the host prints from the file name) and repeated-text (the same")
     print("  paragraph or list item twice in a row)")
@@ -489,6 +527,9 @@ def main(argv=None):
     ap.add_argument("--wiki", action="store_true",
                     help="GitHub wiki pages: the host prints the file name as the page title, so a first heading "
                          "that repeats it is flagged")
+    ap.add_argument("--extra", action="store_true",
+                    help="also run the noisy checks: negative-stack (three negatives in a sentence) and slow-start "
+                         "(over ten words before the main verb)")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--list", action="store_true", help="print the rules and the stock-word list")
     ap.add_argument("--fix-hidden", action="store_true",
@@ -525,7 +566,7 @@ def main(argv=None):
         title = None
         if args.wiki and name != "-" and not Path(name).name.startswith("_"):
             title = Path(name).stem.replace("-", " ")
-        hits, words = check_text(read(name), args.max_words, args.allow_dashes, title)
+        hits, words = check_text(read(name), args.max_words, args.allow_dashes, title, args.extra)
         total_words += words
         for h in hits:
             h["file"] = "<stdin>" if name == "-" else name

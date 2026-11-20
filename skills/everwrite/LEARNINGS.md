@@ -6,6 +6,11 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-013 · 2026-11-19 · A topic string is not a repeated opening, and a digit is not a name
+- Trigger: the first topic-string exemption (an opening word also seen capitalized mid-sentence) silenced a real hit whose opening was "0", because "0".capitalize() matches itself.
+- Hypothesis: case tests on non-letters are always true, so any "looks like a name" check needs a letter first.
+- Rule: name checks start with `word[:1].isalpha()`; compare the checker's hits before and after a rule change on the same corpus (diff of sorted output) before trusting new exemptions.
+
 ### L-012 · 2026-10-17 · Test an edited description in the slot users have, not through --plugin-dir
 - Trigger: before the trigger-2 fix, the same unchanged description loaded with `--plugin-dir` (user copy switched off, skill listed as `everwrite:everwrite`) fired on trigger-1 only 1 of 3 runs, losing twice to editwright; as the installed user skill it fired 3 of 3 (T-20261017-2).
 - Hypothesis: the namespaced name and the plugin listing change how the model weighs the skill against neighbours, so the harness measures a different listing than users get.

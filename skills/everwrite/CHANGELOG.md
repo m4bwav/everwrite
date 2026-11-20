@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261119-1 · 2026-11-19 · Concision checks and topic strings from Williams' Style; noisy checks behind --extra
+- because: R-20261119-1, L-013
+- files: scripts/tells.py (rules `wordy` and `announcer`, weak, on; `negative-stack` and `slow-start` behind `--extra`; `repeated-opening` skips a topic string), scripts/test_tells.py (four cases), SKILL.md (Step 2 repeated openings; Readability: problem first for reports and PRs, passive for an unknown actor, affirmative form, adjectives in narration; Step 3 `--extra`)
+- SKILL.md stays at 106 lines. Not shipped: subject-drift per paragraph, buried new term, point-sentence sequence, costless-problem check (none testable by regex at useful precision), Hemingway's conventional punctuation (already covered) and Bradbury (nothing new for everwrite).
+
 ### C-20261118-2 · 2026-11-18 · Release 1.2.1
 - because: C-20261118-1
 - files: plugin.json, .claude-plugin/plugin.json (version)
