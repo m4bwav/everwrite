@@ -81,6 +81,12 @@ Best sources (primary first): Wikipedia "Signs of AI writing" and its cited stud
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
+### R-20261119-1 · 2026-11-19 · Practice: Williams' Style on concision, negatives and topic strings; four checker rules measured
+- Sources: Joseph M. Williams, Style: Lessons in Clarity and Grace (Longman, 9th or 10th ed.), lessons 5 (topic strings, p. 88), 7 (concision, p. 117-123), 8 (subject to verb, p. 140), 10 (problem as condition plus cost, p. 190-196); Hemingway, On Writing (Scribner, 2002), ch. 5 (adjectives in narration). Book rules, unverified on our tools except the counts below.
+- Measured on 120 agent-written READMEs plus their HANDOFF files (224 files, 257,844 words) and 97 human npm READMEs from a node_modules folder on owner-pc (38,752 words). `wordy` (redundant categories, phrase for a word) and `announcer` (topic announcers, attribution metadiscourse): agent docs 0 hits after two false positives were cut ("differ in size", "of a frozen character"); human READMEs 10 hits, all real ("in order to", "prior to", "in regards to"). A readability rule rather than an AI tell, so it ships weak. `negative-stack` (three negatives, explicit or implicit, in a sentence): agent READMEs 100 hits in 103,939 words, mostly "no X, no Y, no Z" lists; human 2. `slow-start` (over ten words before the first finite verb, a suffix heuristic): agent 244, human 80, mostly image alt text, label colons and fragments. Both stay off by default (`--extra`).
+- Repeated openings: Williams holds a paragraph's topic constant as its subject, so three openings on the same noun phrase or a name used mid-sentence are skipped; pronouns and mixed "The ..." openings still fire.
+- Magnitude 0.2 (checker rules and guidance added; no core claim changed).
+
 ### R-20261118-1 · 2026-11-18 · Practice: Smart Brevity and Writing for Social Scientists on short messages and cuts
 - Sources: VandeHei, Allen and Schwartz, Smart Brevity (2022), ch. 8, 10, 15, 23; Becker, Writing for Social Scientists, 2nd ed. (University of Chicago Press, 2007), ch. 4. Book rules, unverified on our tools; no checker rule added.
 - Adopted as guidance: an email or message puts the news or the ask in its first sentence and its subject line names it; an empty "could/may/might" takes the status the source states; the deletion test (cut a phrase, keep the cut if no meaning is lost); ability phrases become "can".
