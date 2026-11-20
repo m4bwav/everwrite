@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261119-2 · 2026-11-19 · Release 1.3.0
+- because: C-20261119-1
+- files: plugin.json, .claude-plugin/plugin.json (version)
+- Version 1.2.1 to 1.3.0, tag v1.3.0. Minor: new checker rules `wordy` and `announcer`, two more behind `--extra`.
+
 ### C-20261119-1 · 2026-11-19 · Concision checks and topic strings from Williams' Style; noisy checks behind --extra
 - because: R-20261119-1, L-013
 - files: scripts/tells.py (rules `wordy` and `announcer`, weak, on; `negative-stack` and `slow-start` behind `--extra`; `repeated-opening` skips a topic string), scripts/test_tells.py (four cases), SKILL.md (Step 2 repeated openings; Readability: problem first for reports and PRs, passive for an unknown actor, affirmative form, adjectives in narration; Step 3 `--extra`)
