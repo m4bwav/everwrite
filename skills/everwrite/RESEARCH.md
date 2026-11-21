@@ -88,6 +88,16 @@ Best sources (primary first): Wikipedia "Signs of AI writing" and its cited stud
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
+### R-20261121-1 · 2026-11-21 · Practice: Zinsser and Garner on clutter and legalese, Knaflic on claim headings and the Big Idea, Zinsser on the cold reader
+- Sources: William Zinsser, On Writing Well (30th anniversary ed., 2006), ch. 3 (clutter), ch. 9 (the lead); Bryan A. Garner, Legal Writing in Plain English (2nd ed.), sections 12, 14-16, 36-37; Cole Nussbaumer Knaflic, Storytelling with You (2022), ch. 2 (the Big Idea), ch. 5-6 (headings that carry the story); William Zinsser, Writing to Learn (1988), ch. 5 ("have I said it?", linear explaining).
+- Shipped, weak: `pomp` (long word with a short twin), `legalese` (here- and there- words, pursuant to, and/or, provided that, said as an adjective), `light-verb` (make/conduct/provide a noun-of: the buried verb), `doublet` (any and all, null and void...), `wordy` and `announcer` widened. Strong: `stock-lead` (future archaeologists, a visitor from Mars, dictionary openings, Imagine), first prose paragraph only.
+- Measured: 0 new hits on 78,557 words across 80 READMEs on owner-pc; every rule has a firing and a quiet test case.
+- SKILL.md: Big Idea sentence before a decision document, claim headings over about 600 words, cold-reader pass in Step 4.
+- Dropped: stacked qualifiers, value-label openers and exclamation rules (Don't over-correct), noun stacks and peopleless sentences (no regex at useful precision), shall and role labels (legal drafting, not everwrite's reach), of-density and average-length measures, a `--report` heading checker (left as a Step 4 question).
+- Magnitude: 0.2
+- applied: C-20261121-1
+
+<!-- tells: off -->
 ### R-20261120-1 · 2026-11-20 · Practice: The Sense of Style and Thinking Like a Writer on metadiscourse, connectives and maps; three checker rules measured
 - Sources: Steven Pinker, The Sense of Style (Viking, 2014), ch. 2 (metadiscourse, the text as the subject), ch. 5 (one connective per relation); Stephen V. Armstrong and Timothy P. Terrell, Thinking Like a Writer (3rd ed.), ch. 2 (announce counts before multi-part reasoning), ch. 3 (maps of at most four parts, roadsigns in the map's words, context before a block of detail), ch. 10 (compound prepositions). Book rules, unverified on our tools except the counts below.
 - Measured before and after on the same text: 522 npm READMEs from node_modules folders on owner-pc (228,506 checked words), 8 READMEs the author wrote before 2023 (780 words, from the repositories' history), 246 agent-written READMEs and `ai-docs/log.md` files (538,447 words), the eval fixtures, and three planted AI-style samples (247 words). New hits on the human and agent corpora: 0 (0.00 per 1,000 words); no earlier hit removed. Planted samples: 14 of 15 planted slips caught; the miss is a "Finally" after "Third" under a count of three, which the rule reads as a closing line on purpose. `count-mismatch` examined 517 announced counts (10 followed by a list) and flagged none in real text.

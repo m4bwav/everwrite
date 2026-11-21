@@ -119,6 +119,17 @@ RULES = [
     ("announcer", "weak", r"\bin regard(?:s)? to\b|\bso far as [^.!?]{1,40} is concerned\b", "fold the topic into the subject and say the point"),
     ("announcer", "weak", r"\b(?:has|have) been (?:observed|noted|found|shown|reported) to\b|\bit (?:has been|is|was) (?:noted|observed|reported) that\b", "state the fact; name the source if it matters"),
 
+    # Zinsser, On Writing Well, ch. 3 (clutter): a long word with a short twin. utilize is already in STOCK_WORDS.
+    ("pomp", "weak", r"\b(?:assistance|numerous|facilitat(?:e|es|ed|ing)|remainder|sufficient(?:ly)?|referred to as|presently)\b|\battempt(?:s|ed)? to\b", "short word: help, many, ease, rest, enough, called, now, try"),
+    ("announcer", "weak", r"\bI might add\b|\bit should be pointed out\b|\bit is interesting to note\b|\bthis will interest you\b", "add it, point it out, or make it interesting"),
+    # Garner, Legal Writing in Plain English, sections 12, 14-16, 36-37: legalese, displaced phrases, buried verbs, doublets.
+    ("legalese", "weak", r"\b(?:herein(?:after|above|below)?|heretofore|thereafter|therein|thereto|aforementioned|aforesaid|witnesseth|pursuant to|inasmuch as|subsequent to|forthwith)\b|\band/or\b|\bprovided,? (?:however,? )?that\b|\bsaid (?:agreement|contract|property|party|parties|premises|document|notice|lease|amount)\b", "plain word: here, later, under, because, after, now; and/or: pick one"),
+    ("wordy", "weak", r"\b(?:an adequate|a sufficient) number of\b|\bat (?:the present time|this point in time)\b|\bduring the course of\b|\bfor the reason that\b|\bnotwithstanding the fact that\b|\bon a daily basis\b|\bthe majority of\b|\buntil such time as\b|\bin the near future\b", "one word: enough, now, during, because, although, daily, most, until, soon"),
+    ("light-verb", "weak", r"\b(?:make|makes|made|conduct(?:s|ed)?|provide[sd]?|submit(?:s|ted)?|perform(?:s|ed)?|give[sn]?|gave|furnish(?:es|ed)?|effect(?:s|ed)?) (?:a|an|the) \w+(?:ation|ment|ance|ence|ysis) (?:of|to|for|on|about)\b", "use the buried verb: examine, describe, apply, consider"),
+    ("doublet", "weak", r"\b(?:due and payable|null and void|indemnify and hold harmless|last will and testament|cease and desist|any and all|true and correct|terms and conditions|rules and regulations|give,? devise,? and bequeath)\b", "if one word covers the other, keep that one"),
+    # Zinsser, ch. 9: leads he retires. Strong, but only in the first prose paragraph (flag lead).
+    ("stock-lead", "strong", r"\bwhen (?:some )?future archaeologists?\b|\bif a (?:visitor|creature|man) from Mars\b|\bone day not long ago\b|\bwhat do [^.!?]{3,80} have in common\?|\b(?:Webster's|the dictionary) defines\b|^imagine\b", "open on the subject or a hard detail", "lead"),
+
     # Pinker, ch. 5: one connective per relation. A readability slip more than an AI tell, so weak.
     ("doubled-connective", "weak", r"\bthe reason\b[^.!?;]{0,60}?\b(?:is|was) because\b|\bso (?:therefore|thus|hence)\b|\bbut (?:however|nevertheless|nonetheless)\b|\balso additionally\b|\bbecause\b[^.!?;]{1,80}?,\s*therefore\b", "keep one connective: the reason is that, so, but"),
 ]
@@ -483,7 +494,8 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=Fa
     for lineno, match, hint in count_mismatches(paras):
         add(lineno, "weak", "count-mismatch", match, hint)
 
-    for para in paras:
+    lead_para = next((i for i, p in enumerate(paras) if p[0][3] == "text"), -1)
+    for index, para in enumerate(paras):
         starts, pos = [], 0
         prose_parts, raw_parts = [], []
         for lineno, prose, raw, kind in para:
@@ -508,6 +520,8 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=Fa
                     if CONDITIONAL.search(source, boundary + 1, m.start()):
                         continue
                 if "roadmap" in flags and line_at(m.start()) in roadmap:
+                    continue
+                if "lead" in flags and index != lead_para:
                     continue
                 add(line_at(m.start()), severity, category, m.group(0), hint)
 

@@ -310,6 +310,28 @@ class Cli(unittest.TestCase):
         self.assertIn("repeated-opening", categories(drift))
         self.assertIn("repeated-opening", categories("It reads. It splits. It returns.\n"))
 
+    def test_zinsser_garner_weak_rules(self):
+        bad = {
+            "pomp": "We need assistance with numerous files.",
+            "legalese": "The tenant shall pay rent pursuant to said agreement and/or the lease herein.",
+            "wordy": "The majority of users log in on a daily basis.",
+            "light-verb": "The team will conduct an examination of the logs.",
+            "doublet": "Any and all fees are due and payable now.",
+            "announcer": "It is interesting to note that the build passed.",
+        }
+        for cat, s in bad.items():
+            self.assertIn((cat, "weak"), cats(s), s)
+        good = "We need help with many files. The team will examine the logs. He said the contract was fine."
+        self.assertFalse({"pomp", "legalese", "light-verb", "doublet"} & categories(good))
+
+    def test_stock_lead_first_paragraph_only(self):
+        lead = "When future archaeologists dig up our servers, they will find logs.\n\nThe parser runs daily.\n"
+        self.assertIn(("stock-lead", "strong"), cats(lead))
+        self.assertIn(("stock-lead", "strong"), cats("# Notes\n\nImagine a parser that never fails.\n"))
+        later = "The parser runs daily.\n\nImagine a parser that never fails.\n"
+        self.assertNotIn("stock-lead", categories(later))
+        self.assertNotIn("stock-lead", categories("The parser runs daily. Users imagine more.\n"))
+
     def test_main_in_process(self):
         buf = io.StringIO()
         with redirect_stdout(buf):

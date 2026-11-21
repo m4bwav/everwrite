@@ -6,6 +6,10 @@ Write an entry the moment a real signal happens: a user correction, the same err
 
 ## Active
 
+### L-014 · 2026-11-21 · A rule meant for the opening needs a paragraph index, not a line number
+- Trigger: stock leads ("Imagine...") are fine mid-document, so a strong rule would misfire anywhere but the first prose paragraph.
+- Rule: a rule flag (`lead`) skips every paragraph but the first of kind `text`; headings before it don't count. Add a mid-document quiet case for any such rule.
+
 ### L-013 · 2026-11-19 · A topic string is not a repeated opening, and a digit is not a name
 - Trigger: the first topic-string exemption (an opening word also seen capitalized mid-sentence) silenced a real hit whose opening was "0", because "0".capitalize() matches itself.
 - Hypothesis: case tests on non-letters are always true, so any "looks like a name" check needs a letter first.
