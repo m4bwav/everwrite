@@ -103,6 +103,11 @@ The story of the search. A report body built from "First I", "Then I", "Next I",
 - Before: "First I read the config. Then I traced the call. Finally I found the cache key includes the timestamp."
 - After: "The cache key includes the timestamp, so every build misses the cache."
 
+The text as the subject (Pinker, The Sense of Style, ch. 2). "This section discusses", "In this article we will", "The following section explains" talk about the page instead of the subject. Start on the subject. A one-sentence map of the parts atop a long report or doc section is a roadsign (Armstrong, Thinking Like a Writer, ch. 3), and `tells.py` skips it when the section runs 400 words or more.
+- Before: "In this article we will look at why the cache drops entries." After: "The cache drops entries because the size limit counts keys, not bytes."
+
+Two connectives for one relation (Pinker, ch. 5): "the reason is because", "so therefore", "but however", "Because X, therefore Y". Keep one. A count that the parts don't match (Armstrong, ch. 2): "for three reasons" followed by four, or a "four steps:" list with three items. Fix the count or the parts.
+
 Writing about the previous version (in docs, not changelogs).
 - Before: "This function replaces the old approach of scanning every item."
 - After: "This function looks items up in a hash map."
