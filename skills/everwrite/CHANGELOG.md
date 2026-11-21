@@ -4,6 +4,16 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261120-2 · 2026-11-20 · Release 1.4.0
+- because: C-20261120-1
+- files: plugin.json, .claude-plugin/plugin.json (version)
+- Version 1.3.0 to 1.4.0, tag v1.4.0. Minor: new checker rules `doubled-connective` and `count-mismatch`, and a wider `announcer`.
+
+### C-20261120-1 · 2026-11-20 · Metadiscourse, doubled connectives and count checks from Pinker and Armstrong
+- because: R-20261120-1
+- files: scripts/tells.py (`announcer` widened with a roadmap skip for long sections; new weak rules `doubled-connective` and `count-mismatch`; `--list`), scripts/test_tells.py (four cases), SKILL.md (Hard rule 3: map of the parts in a long document stays; Readability: count the parts before the first, keep the count true, one sentence before a block of detail), references/patterns.md (Leftovers: the text as the subject, two connectives, a count the parts don't match)
+- 0 new hits per 1,000 words on 767,733 words of human and agent prose; 14 of 15 planted slips caught. SKILL.md stays at 106 lines. Not shipped: compound prepositions (already in `wordy`), intensifier and hedge rules (Don't over-correct wins), a wider repeated-opening rule (deliberate parallelism).
+
 ### C-20261119-2 · 2026-11-19 · Release 1.3.0
 - because: C-20261119-1
 - files: plugin.json, .claude-plugin/plugin.json (version)

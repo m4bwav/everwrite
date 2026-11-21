@@ -113,9 +113,29 @@ RULES = [
     # topic announcers and attribution metadiscourse.
     ("wordy", "weak", r"\b(?:period of time|(?:red|blue|green|yellow|pink|black|white|grey|gray|large|small|big|tiny|huge|round|square) in (?:colou?r|size|shape)|in an? \w+ (?:manner|fashion)|of an? \w+ nature|end result|final outcome|past history|future plans|each and every|full and complete|first and foremost)\b", "drop the category or the repeat word"),
     ("wordy", "weak", r"\b(?:despite|in spite of) the fact that\b|\bdue to the fact that\b|\bin the event that\b|\bin a (?:situation|case) where\b|\bthere is a need for\b|\bin a position to\b|\bit is possible that\b|\bprior to\b|\bhas the ability to\b|\bin order to\b|\bfor the purpose of\b|\bwith regard to\b|\bconcerning the matter of\b", "one word: even though, because, if, when, must, can, may, before, to, about"),
-    ("announcer", "weak", r"\bthis (?:section|document|page|post|article|guide|chapter|essay|paper) (?:will )?(?:introduces?|discuss(?:es)?|covers?|describes?|explains?|outlines?|explores?)\b|\bin (?:this|the following) (?:section|document|post|article|guide|essay), (?:I|we) (?:will|'ll)\b|\bin regard(?:s)? to\b|\bso far as [^.!?]{1,40} is concerned\b", "fold the topic into the subject and say the point"),
+    # Pinker, The Sense of Style, ch. 2 (metadiscourse: the text as the subject). Flag roadmap: skipped in the opening
+    # paragraph of a long section, where Armstrong (Thinking Like a Writer, ch. 3) wants a map of the parts.
+    ("announcer", "weak", r"\bthis (?:section|document|page|post|article|guide|chapter|essay|paper|report|tutorial) (?:will )?(?:introduces?|discuss(?:es)?|covers?|describes?|explains?|outlines?|explores?|presents?|reviews?|summari[sz]es?|demonstrates?|examines?|walks? (?:you )?through|looks? at)\b|\bin (?:this|the following|the next) (?:section|document|post|article|guide|essay|chapter|paper|report|tutorial),? (?:I|we) (?:will|'ll|are going to)\b|\bthe (?:following|next|previous|preceding) (?:section|chapter|paragraphs?) (?:will )?(?:shows?|describes?|explains?|covers?|discuss(?:es)?|presents?|outlines?|reviews?)\b", "fold the topic into the subject and say the point", "roadmap"),
+    ("announcer", "weak", r"\bin regard(?:s)? to\b|\bso far as [^.!?]{1,40} is concerned\b", "fold the topic into the subject and say the point"),
     ("announcer", "weak", r"\b(?:has|have) been (?:observed|noted|found|shown|reported) to\b|\bit (?:has been|is|was) (?:noted|observed|reported) that\b", "state the fact; name the source if it matters"),
+
+    # Pinker, ch. 5: one connective per relation. A readability slip more than an AI tell, so weak.
+    ("doubled-connective", "weak", r"\bthe reason\b[^.!?;]{0,60}?\b(?:is|was) because\b|\bso (?:therefore|thus|hence)\b|\bbut (?:however|nevertheless|nonetheless)\b|\balso additionally\b|\bbecause\b[^.!?;]{1,80}?,\s*therefore\b", "keep one connective: the reason is that, so, but"),
 ]
+
+# Announced counts (Armstrong, ch. 2 and 3): "for three reasons" must match the First/Second... or the list after it.
+COUNT_WORDS = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6}
+ANNOUNCED = re.compile(
+    r"(?<!first )(?<!last )(?<!next )(?<!other )(?<!these )(?<!those )(?<!both )(?<!all )(?<!of )(?<!top )"
+    r"\b(two|three|four|five|six|[2-6]) (?:main |key |big |simple |good |major |important |basic |common |separate )?"
+    r"(?:reasons|ways|things|steps|points|issues|problems|questions|options|parts|changes|benefits|causes|lessons|"
+    r"rules|stages|phases|goals|factors|approaches|strategies|tips|mistakes|ideas|concerns|risks|requirements)\b", re.I)
+ORDINALS = {"first": 1, "firstly": 1, "second": 2, "secondly": 2, "third": 3, "thirdly": 3, "fourth": 4,
+            "fourthly": 4, "fifth": 5, "sixth": 6, "seventh": 7, "finally": 0, "lastly": 0}
+ORDINAL_MARK = re.compile(r"(?:^|[.!?:]\s+)(?:(?:[-*+]|\d+[.)])\s+)?(?:\*\*|__)?(First(?:ly)?|Second(?:ly)?|Third(?:ly)?|"
+                          r"Fourth(?:ly)?|Fifth|Sixth|Seventh|Finally|Lastly)\b(?!\s+(?:of|and|or|time|place|half|step|"
+                          r"version|line|run|pass|day|week|year)\b)", re.M)
+ROADMAP_MIN_WORDS = 400
 
 # Off by default (noisy on human prose; --extra turns them on). Measured in R-20261119-1.
 NEGATIVE = re.compile(r"\b(?:not|no|never|none|nothing|nor|cannot|without|unless|except|fail(?:s|ed)?|den(?:y|ies|ied)|prevent(?:s|ed)?|refus(?:e|es|ed)|preclude[sd]?)\b|n't\b", re.I)
@@ -326,6 +346,89 @@ def topic_string(word, two_words, prose):
     return word[:1].isalpha() and bool(re.search(r"[a-z,;] %s\b" % re.escape(word.capitalize()), prose))
 
 
+def heading_level(para):
+    m = HEADING.match(para[0][1]) if para[0][3] == "heading" else None
+    return len(m.group(1)) if m else None
+
+
+def roadmap_lines(paras):
+    """Lines of each section's opening paragraph when the section runs ROADMAP_MIN_WORDS or more: a map of the
+    parts is a roadsign there (Armstrong), not empty metadiscourse (Pinker). Text before any heading opens the
+    whole document."""
+    lines = set()
+    for i in range(-1, len(paras)):
+        level = 0 if i < 0 else heading_level(paras[i])
+        if level is None or (i < 0 and paras and heading_level(paras[0]) is not None):
+            continue
+        j = i + 1
+        if j >= len(paras) or paras[j][0][3] != "text":
+            continue
+        words, k = 0, j
+        while k < len(paras):
+            lv = heading_level(paras[k])
+            if lv is not None and level and lv <= level:
+                break
+            if lv is None:
+                words += sum(len(WORD.findall(p[1])) for p in paras[k])
+            k += 1
+        if words >= ROADMAP_MIN_WORDS:
+            lines.update(p[0] for p in paras[j])
+    return lines
+
+
+def count_mismatches(paras):
+    """Announced counts that the list or the First/Second... markers after them do not match. Yields
+    (lineno, match, hint)."""
+    for i, para in enumerate(paras):
+        if para[0][3] == "heading" or para[0][3] == "table":
+            continue
+        text = "\n".join(p[1] for p in para)
+        for m in ANNOUNCED.finditer(text):
+            want = COUNT_WORDS[m.group(1).lower()]
+            lineno = para[min(text.count("\n", 0, m.start()), len(para) - 1)][0]
+            tail = text[m.end():]
+            # List mode: the announcing sentence ends the paragraph with a colon and a list follows.
+            if re.fullmatch(r"[^.!?]*:\s*", tail) and i + 1 < len(paras) and paras[i + 1][0][3] == "item":
+                indent = len(paras[i + 1][0][1]) - len(paras[i + 1][0][1].lstrip())
+                got = 0
+                for nxt in paras[i + 1:]:
+                    kind = nxt[0][3]
+                    ind = len(nxt[0][1]) - len(nxt[0][1].lstrip())
+                    if kind == "item" and ind == indent:
+                        got += 1
+                    elif kind == "item" and ind > indent or kind == "text" and ind > indent:
+                        continue
+                    else:
+                        break
+                if got != want:
+                    yield lineno, "%s announced, %d listed" % (m.group(0), got), "make the count match the list"
+                continue
+            # Ordinal mode: First, Second... in the rest of this paragraph and the next few, up to a heading.
+            window = [tail]
+            for nxt in paras[i + 1:i + 9]:
+                if nxt[0][3] in ("heading", "table"):
+                    break
+                window.append("\n".join(p[1] for p in nxt))
+            seen, top, finally_after = [], 0, False
+            for chunk in window:
+                if seen and ANNOUNCED.search(chunk):
+                    break
+                for om in ORDINAL_MARK.finditer(chunk):
+                    value = ORDINALS[om.group(1).lower()]
+                    if value == 0:
+                        finally_after = finally_after or bool(seen)
+                        continue
+                    if seen and value <= seen[-1]:
+                        break
+                    seen.append(value)
+                    top = value
+            if len(seen) < 2:
+                continue
+            got = top if top >= want else top + (1 if finally_after else 0)
+            if got != want:
+                yield lineno, "%s announced, %d marked" % (m.group(0), got), "make the count match the First, Second... that follow"
+
+
 def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=False):
     """page_title: the title the host prints above the page (a GitHub wiki prints the file name), which the
     first heading must not repeat. extra: also run the off-by-default checks (negative-stack, slow-start)."""
@@ -375,7 +478,12 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=Fa
                 add(lineno, "strong", "repeated-text", text_now, "said twice in a row; cut one")
             previous = (kind, text_now)
 
-    for para in paragraphs(prepared):
+    paras = list(paragraphs(prepared))
+    roadmap = roadmap_lines(paras)
+    for lineno, match, hint in count_mismatches(paras):
+        add(lineno, "weak", "count-mismatch", match, hint)
+
+    for para in paras:
         starts, pos = [], 0
         prose_parts, raw_parts = [], []
         for lineno, prose, raw, kind in para:
@@ -399,6 +507,8 @@ def check_text(text, max_words=30, allow_dashes=False, page_title=None, extra=Fa
                     boundary = max(source.rfind(c, 0, m.start()) for c in ".!?\n")
                     if CONDITIONAL.search(source, boundary + 1, m.start()):
                         continue
+                if "roadmap" in flags and line_at(m.start()) in roadmap:
+                    continue
                 add(line_at(m.start()), severity, category, m.group(0), hint)
 
         found = list(STOCK.finditer(prose_text))
@@ -505,7 +615,8 @@ def print_rules():
     for category, severity, _, hint, _ in COMPILED:
         print("  %-16s %-6s %s" % (category, severity, hint))
     print("  %-16s %-6s %s" % ("vocabulary", "both", "strong when two or more distinct words share a paragraph"))
-    print("  also: emoji, bold-label, title-case, divider, curly-quote, decoration, long-sentence, repeated-opening")
+    print("  also: emoji, bold-label, title-case, divider, curly-quote, decoration, long-sentence, repeated-opening,")
+    print("  count-mismatch (weak: \"for three reasons\" against the list or the First, Second... after it)")
     print("  with --extra (weak, noisy): negative-stack, slow-start")
     print("  also (strong): repeated-heading (a heading straight under one with the same words, or with --wiki the")
     print("  first heading repeating the page title the host prints from the file name) and repeated-text (the same")

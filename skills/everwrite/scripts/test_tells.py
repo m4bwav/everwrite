@@ -252,6 +252,45 @@ class Cli(unittest.TestCase):
         clean = "The cache drops entries after 41 seconds. Raise the limit to keep them.\n"
         self.assertFalse({"wordy", "announcer"} & categories(clean))
 
+    def test_metadiscourse(self):
+        for s in ("In this article we will compare the two caches.\n", "This report summarizes the quarter.\n",
+                  "The following section explains the rollout.\n", "This guide will walk you through the setup.\n"):
+            self.assertIn(("announcer", "weak"), cats(s), s)
+        self.assertNotIn("announcer", categories("As we have seen, the cache drops entries.\n"))
+        self.assertNotIn("announcer", categories("The next release covers Windows.\n"))
+
+    def test_roadmap_opening_a_long_section_is_kept(self):
+        body = "\n\n".join("Paragraph %d keeps the cache warm and drops old keys after a minute." % i for i in range(40))
+        long_doc = "## Cache\n\nThis section covers sizing, eviction and metrics.\n\n" + body + "\n"
+        self.assertNotIn("announcer", categories(long_doc))
+        short_doc = "## Cache\n\nThis section covers sizing, eviction and metrics.\n\nIt drops old keys.\n"
+        self.assertIn("announcer", categories(short_doc))
+        later = "## Cache\n\nThe cache drops keys.\n\nThis section covers sizing.\n\n" + body + "\n"
+        self.assertIn("announcer", categories(later))
+
+    def test_doubled_connective(self):
+        for s in ("The reason it failed is because the key expired.\n", "It passed twice, so therefore it ships.\n",
+                  "We wanted a switch, but however the risk was high.\n",
+                  "Because churn rose, therefore we paused the change.\n"):
+            self.assertIn(("doubled-connective", "weak"), cats(s), s)
+        for s in ("The reason is that the key expired.\n", "It failed because the key expired.\n",
+                  "It passed, so it ships.\n", "Because churn rose, we paused. Therefore the price holds.\n"):
+            self.assertNotIn("doubled-connective", categories(s), s)
+
+    def test_count_mismatch(self):
+        self.assertIn(("count-mismatch", "weak"),
+                      cats("We missed for two reasons. First, offers were slow. Second, two left. Third, the recruiter quit.\n"))
+        self.assertIn(("count-mismatch", "weak"),
+                      cats("There are four reasons. First, it is slow.\n\nSecond, it leaks. Finally, it crashes.\n"))
+        self.assertIn(("count-mismatch", "weak"), cats("The rollout has four steps:\n\n- Ship.\n- Enable.\n- Remove.\n"))
+        ok = ("We missed for three reasons. First, offers were slow. Second, two left. Finally, the recruiter quit.\n",
+              "The rollout has three steps:\n\n- Ship.\n  - behind a flag\n- Enable.\n- Remove.\n",
+              "There are two ways to install it.\n\nUse npm or clone it.\n",
+              "The first three steps are optional. First, read. Second, write.\n",
+              "Install it in two steps. First, download it. Second, run it.\n\n## Next\n\nThird, unrelated text.\n")
+        for s in ok:
+            self.assertNotIn("count-mismatch", categories(s), s)
+
     def test_extra_checks_off_by_default(self):
         neg = "No user can not run it without a key.\n"
         slow = "The new retry policy for a failed upload on a slow mobile network in a rural area now waits.\n"
