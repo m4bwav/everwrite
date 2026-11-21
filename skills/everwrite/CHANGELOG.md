@@ -4,6 +4,11 @@ Every change to [SKILL.md](SKILL.md) and its companions, newest first, each with
 
 Entry shape: `### C-YYYYMMDD-n · date · one-line summary`, then `because:` (IDs or "user request"), `files:` (file and section), and a sentence on what changed. Cite section headings, not line numbers.
 
+### C-20261121-1 · 2026-11-21 · Pompous words, legalese, buried verbs, doublets and stock leads; Big Idea, claim headings and a cold-reader pass
+- because: R-20261121-1
+- files: scripts/tells.py (weak `pomp`, `legalese`, `light-verb`, `doublet`, wider `wordy` and `announcer`; strong `stock-lead` with a first-paragraph `lead` flag), scripts/test_tells.py (two cases), SKILL.md (Readability: Big Idea sentence and claim headings; Step 4: headings-only read and cold-reader pass)
+- 0 new hits on 78,557 words of READMEs. No version bump; the master releases.
+
 ### C-20261120-2 · 2026-11-20 · Release 1.4.0
 - because: C-20261120-1
 - files: plugin.json, .claude-plugin/plugin.json (version)
