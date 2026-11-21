@@ -78,6 +78,13 @@ Best sources (primary first): Wikipedia "Signs of AI writing" and its cited stud
 
 ## Findings log
 
+### R-20261120-2 · 2026-11-20 · Quiet scheduled check
+- Summary: no new primary source on AI-writing tells since 11-08 beyond what R-20261119-1 and R-20261120-1 already took in. Wikipedia's Signs of AI writing still frames tells as indicators, not proof, and notes the shift to structural tells (rule of three, negative parallelism), both already in the checker. Humanizer/detector search returned vendor pages only (noisy). Tooling: nothing new. Testing: nothing new.
+- Track: subject, tooling, practice, testing
+- Sources: https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing (via IEEE Spectrum coverage)
+- Magnitude: 0.05
+- applied: none
+
 Newest first. One entry per material finding; a quiet refresh gets one entry saying so. `Track` is subject, tooling, practice, or testing.
 
 <!-- tells: off -->
