@@ -14,8 +14,8 @@
   "topic": "the signs of AI-generated prose and how to write without them: pattern catalogues, humanizer skills, checkers, what current models still overuse",
   "tier": "fast",
   "interval_days": 10.0,
-  "last_checked": "2026-11-08",
-  "next_due": "2026-11-17",
+  "last_checked": "2026-11-20",
+  "next_due": "2026-12-02",
   "verify_at_use": false,
   "volatile_claims": [
     {
@@ -93,12 +93,18 @@
       "m": 0.25,
       "interval_after": 10.0,
       "note": "Wikipedia moved promotional tone to historical and split Style subpage; humanizer unchanged; no SKILL change; cost: searches 0 · fetches 4 · tool calls 6"
+    },
+    {
+      "date": "2026-11-20",
+      "m": 0.05,
+      "interval_after": 10.0,
+      "note": "quiet; vendor humanizer pages noisy; cost: searches 2 · fetches 0 · tool calls 3"
     }
   ],
   "counts": {
     "learnings": 12,
     "changes": 19,
-    "research": 25,
+    "research": 26,
     "tests": 6
   },
   "consolidate_every": 25,
